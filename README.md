@@ -96,4 +96,96 @@ DB_PASSWORD=      # パスワード
 DB_HOST=localhost # ホスト名
 DB_NAME=todo_db   # データベース名
 ```
-空のデータベースであることを確認、
+空のデータベースであることを確認。</br>
+models.py を作っておく。
+
+### 4 テーブルを作成する
+
+Base クラスに DeclarativeBase を継承して</br>
+クラスとテーブルを自動で結び付ける
+```python
+# models.py
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
+```
+#### users テーブルの定義（ログイン機能）
+- ユーザーID
+- ユーザー名
+- メールアドレス
+- パスワード
+- 登録日
+```python
+# models.py
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Text, Uuid, ForeignKey, DateTime
+import uuid
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
+
+
+class User(Base):
+    __tablename__ = "users"
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    name: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        unique=False,
+        )
+    email: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        unique=True,
+    )
+    password: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(ZoneInfo("Asia/Tokyo")),
+        nullable=False,
+    )
+```
+#### categories テーブルの定義（カテゴリ管理機能）
+- カテゴリID
+- カテゴリ名
+#### posts テーブルの定義(記事投稿機能)
+- 記事ID
+- 記事タイトル
+- 記事内容
+- 完了状態
+- ユーザーID
+- カテゴリID
+#### リレーションシップ
+python上でオブジェクト同士の結びつきを利用して</br>
+オブジェクトにアクセスしやすくする仕組み
+```python
+# models.py
+from sqlalchemy.orm import relationship
+
+# class User
+post: Mapped[list["Post"]] = relationship(
+    back_populates="user"
+)
+
+# class Post
+category: Mapped["Category"] = relationship(
+    back_populates="post"
+)
+```
+```python
+# main.py
+""" データベース作成用 """
+Base.metadata.create_all(engine)
+```
+```bash
+# bash
+$ python main.py
+```
+todo_db データベースにテーブルが作成される。
