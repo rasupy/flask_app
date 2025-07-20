@@ -12,6 +12,7 @@ class Base(DeclarativeBase):
 # ユーザーID、ユーザー名、メールアドレス、パスワード, 登録日
 class User(Base):
     __tablename__ = "users"
+    
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid,
         primary_key=True,
@@ -21,7 +22,7 @@ class User(Base):
         Text,
         nullable=False,
         unique=False,
-        )
+    )
     email: Mapped[str] = mapped_column(
         Text,
         nullable=False,
@@ -44,6 +45,7 @@ class User(Base):
 # カテゴリID、カテゴリ名
 class Category(Base):
     __tablename__ = "categories"
+    
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid,
         primary_key=True,
@@ -62,6 +64,7 @@ class Category(Base):
 # 記事ID、記事タイトル、記事内容、完了状態, ユーザーID、カテゴリID
 class Post(Base):
     __tablename__ = "posts"
+    
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid,
         primary_key=True,

@@ -59,7 +59,7 @@ $ psql -U postgres -h localhost
 ### STEP 3
 テーブルの情報を取得する
 ```python
-# main.py
+# database.py
 from sqlalchemy import create_engine, inspect
 from dotenv import load_dotenv  # type: ignore
 import os
@@ -180,12 +180,12 @@ category: Mapped["Category"] = relationship(
 )
 ```
 ```python
-# main.py
+# database.py
 """ データベース作成用 """
 Base.metadata.create_all(engine)
 ```
 ```bash
 # bash
-$ python main.py
+$ python database.py
 ```
 todo_db データベースにテーブルが作成される。
