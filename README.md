@@ -189,3 +189,27 @@ Base.metadata.create_all(engine)
 $ python database.py
 ```
 todo_db データベースにテーブルが作成される。
+#### データベースにテストユーザーを登録
+```python
+# text.py
+from flaskr.db import SessionLocal
+from flaskr.models import User
+import uuid
+
+with SessionLocal() as session:
+    dummy_user = User(
+        id=uuid.uuid4(),
+        name="テストユーザー",
+        email="test@example.com",
+        password="dummy_password",  # 本来はハッシュ化したパスワードにする
+    )
+    session.add(dummy_user)
+    session.commit()
+    print("ダミーユーザーを追加しました:", dummy_user)
+```
+
+
+#### ページを作る
+あとは、Flaskでページと機能をmain.pyで作っていく。</br>
+main.py で動作する為に __init__.py と db.py を作成する。</br>
+db.py は、データベースにアクセスする為の機能</br>
