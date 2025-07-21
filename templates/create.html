@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>投稿の作成</h2>
+<form action="/create" method="post">
+    <label for="post-title">タイトル:</label>
+    <input type="text" id="post-title" name="post_title">
+
+    <label for="post-content">内容:</label>
+    <textarea id="post-content" name="post_content"></textarea>
+
+    <label for="post-category">カテゴリー:</label>
+    <input type="text" id="post-category" name="post_category">
+
+    <button type="submit">登録</button>
+</form>
+{% endblock %}

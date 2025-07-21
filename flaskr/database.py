@@ -1,9 +1,13 @@
+# ==========================================================
+# データベースの作成用
+# ==========================================================
 from sqlalchemy import create_engine, inspect, select, or_, update, delete
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import Session, selectinload, sessionmaker
 from models import Base, User, Post
 from datetime import date
 from dotenv import load_dotenv  # type: ignore
 import os
+
 
 def main():
     load_dotenv()
@@ -15,24 +19,28 @@ def main():
 
     # 接続文字列を作成
     db_url = f"postgresql+psycopg2://{user}:{password}@{host}/{dbname}"
-    
+
     engine = create_engine(
         db_url,
         echo=True,
     )
-    
+
     """ データベースの情報を取得
     inspector = inspect(engine)
     print(inspector.get_table_names())
     """
-    
+
     """ データベース作成用
     Base.metadata.create_all(engine)
     """
 
     """ データを追加する
     with Session(engine) as session:
-        user = User(name="鈴木", birthday=date(1990, 1, 1))
+        user = User(
+            name="",
+            email="",
+            password="",
+        )
         session.add(user)
         session.commit()
     """
@@ -113,7 +121,7 @@ def main():
 
     """ テーブルのデータを削除
     with Session(engine) as session:
-        stmt = select(User).where(User.name == "山田")
+        stmt = select(User).where(User.name == "rasupy")
         user = session.scalars(stmt).one()
         session.delete(user)
         session.commit()

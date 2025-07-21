@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- カテゴリーリスト -->
+<section id="category">
+    <article class="category-list">
+        <div class="category-title">
+            <h1>Category</h1>
+        </div>
+<!-- 登録されたカテゴリーを表示 -->
+        <div class="category-item">
+            {% for post in posts %}
+                <p>タイトル: {{ post.title }}</p>
+                <p>内容: {{ post.content if post.content else "" }}</p>
+                <p>カテゴリー: {{ post.category.name }}</p> 
+            {% endfor %}
+        </div>
+    </article>
+</section>
+{% endblock %}
