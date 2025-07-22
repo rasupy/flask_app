@@ -6,15 +6,24 @@ import uuid
 import os
 
 template_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
-app = Flask(__name__, template_folder=template_dir)
+static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
+
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
 
 @app.route("/admin")
 def admin():
     with SessionLocal() as session:
         posts = session.query(Post).options(selectinload(Post.category)).all()
-        # 各post.category.name にアクセスできる（リレーション済み）
-    return render_template("admin.html", posts=posts)
+
+        # カテゴリごとに投稿をグループ化
+        category_map = {}
+
+        for post in posts:
+            category_name = post.category.name if post.category else "未分類"
+            category_map.setdefault(category_name, []).append(post)
+
+    return render_template("admin.html", category_map=category_map)
 
 
 @app.route("/create", methods=["GET", "POST"])

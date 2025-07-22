@@ -1,0 +1,92 @@
+@charset "UTF-8";
+html, body {
+  font-family: "Noto Sans JP", "Roboto", sans-serif;
+  font-size: 16px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+
+.main-title {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  color: #333;
+}
+
+/* 共通部分(コンテンツ)
+=================================================== */
+#contents {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 1rem;
+  height: 90%;
+}
+
+.card {
+  flex: 1 1 calc(25% - 1rem);
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.title {
+  font-size: 1.5rem;
+  border-bottom: 1px solid #000;
+  padding-bottom: 0.5rem;
+}
+
+/* カテゴリーリスト
+=================================================== */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.category-item {
+  font-size: 1.2rem;
+  transition: 0.5s;
+}
+
+.category-item:hover {
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* タスクリスト
+=================================================== */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.task-item {
+  font-size: 1rem;
+  border: 1px solid #000;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  transition: 0.5s;
+}
+
+.task-item:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.task-btn {
+  font-size: 0.75rem;
+}/*# sourceMappingURL=style.css.map */

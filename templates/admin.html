@@ -1,19 +1,57 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block title %}Admin - Todo-App{% endblock %}
+
 {% block content %}
-<!-- カテゴリーリスト -->
-<section id="category">
-    <article class="category-list">
-        <div class="category-title">
-            <h1>Category</h1>
-        </div>
-<!-- 登録されたカテゴリーを表示 -->
-        <div class="category-item">
-            {% for post in posts %}
-                <p>タイトル: {{ post.title }}</p>
-                <p>内容: {{ post.content if post.content else "" }}</p>
-                <p>カテゴリー: {{ post.category.name }}</p> 
+<!-- HEADER
+================================================= -->
+<header>
+    <h2 class="main-title">Admin Todo-App</h2>
+</header>
+
+<!-- MAIN CONTENT
+================================================= -->
+<section id="contents">
+<!-- CATEGORY 
+================================================= -->
+    <article class="card">
+        <h2 class="title">Category</h2>
+        <ul class="category-list">
+            {% for category_name, posts in category_map.items() %}
+                {% if category_name %}
+                    <li class="category-item">{{ category_name }}</li>
+                {% else %}
+                    <li class="category-item">No categories available.</li>
+                {% endif %}
             {% endfor %}
-        </div>
+        </ul>
+    </article>
+<!-- TASK 
+================================================= -->
+    <article class="card">
+        <h2 class="title">Task</h2>
+        <ul class="task-list">
+            {% for category_name, posts in category_map.items() %}
+                {% for post in posts %}
+                    <li class="task-item">{{ post.title }}
+                        <button class="task-btn">Edit</button>
+                    </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </article>
+<!-- PROGRESS 
+================================================= -->
+    <article class="card">
+        <h2 class="title">Progress</h2>
+        <ul class="progress-list">
+        </ul>
+    </article>
+<!-- ARCHIVE 
+================================================= -->
+    <article class="card">
+        <h2 class="title">Archive</h2>
+        <ul class="archive-list">
+        </ul>
     </article>
 </section>
 {% endblock %}
