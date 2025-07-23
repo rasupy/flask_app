@@ -8,7 +8,7 @@
     <h2 class="main-title">Admin Todo-App</h2>
 </header>
 
-<!-- MAIN CONTENT
+<!-- MAIN CONTENTS
 ================================================= -->
 <section id="contents">
 <!-- CATEGORY 
@@ -16,7 +16,10 @@
     <article class="card">
         <div class="title-bar">
             <h2 class="title">Category</h2>
+            <button id="open-category-modal" class="add-post-btn">＋</button>
         </div>
+        <!-- タスク追加フォームを読み込み -->
+        {% include "add_category.html" %}
         <!-- カテゴリー一覧 -->
         <ul class="category-list">
         {% for id, name in categories.items() %}

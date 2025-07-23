@@ -1,7 +1,17 @@
-// タスク追加ボタンの制御
-const modal = document.getElementById("modal");
-const openBtn = document.getElementById("open-modal");
-const closeBtn = document.getElementById("close-modal");
+document.addEventListener("DOMContentLoaded", function () {
+    // タスク追加モーダル制御
+    const taskModal = document.getElementById("task-modal");
+    const openTaskBtn = document.getElementById("open-modal");
+    const closeTaskBtn = document.getElementById("close-task-modal");
 
-openBtn.addEventListener("click", () => modal.classList.remove("hidden"));
-closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+    openTaskBtn.addEventListener("click", () => taskModal.classList.remove("hidden"));
+    closeTaskBtn.addEventListener("click", () => taskModal.classList.add("hidden"));
+
+    // カテゴリー追加モーダル制御
+    const categoryModal = document.getElementById("category-modal");
+    const openCategoryBtn = document.getElementById("open-category-modal");
+    const closeCategoryBtn = document.getElementById("close-category-modal");
+
+    openCategoryBtn.addEventListener("click", () => categoryModal.classList.remove("hidden"));
+    closeCategoryBtn.addEventListener("click", () => categoryModal.classList.add("hidden"));
+});

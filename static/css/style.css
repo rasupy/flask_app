@@ -115,7 +115,7 @@ html, body {
 }
 
 .add-post-btn {
-  background: #fff;
+  background-color: #fff;
   color: #333;
   border: none;
   padding: 0.7rem 1.2rem;
@@ -126,5 +126,5 @@ html, body {
 }
 
 .add-post-btn:hover {
-  background: #f0f0f0;
+  background-color: #f0f0f0;
 }/*# sourceMappingURL=style.css.map */

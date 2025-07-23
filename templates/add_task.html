@@ -1,17 +1,18 @@
 <!-- タスク追加用フォーム ---------------------------------------->
-<div id="modal" class="modal hidden">
-    <form action="{{ url_for('create_post') }}" method="post" class="modal-form">
-        <h2>新しい投稿</h2>
-        <label>タイトル:</label>
-        <input type="text" name="title" required>
-    
-        <label>内容:</label>
-        <textarea name="content"></textarea>
-    
-        <label>カテゴリー名:</label>
-        <input type="text" name="category_name" required>
+<div id="task-modal" class="modal hidden">
+    <form action="{{ url_for('add_task') }}" method="POST" class="modal-form">
+        <select name="category_id" required>
+            <option value="" disabled selected>カテゴリを選択</option>
+            {% if categories %}
+                {% for id, name in categories.items() %}
+                    <option value="{{ id }}">{{ name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
 
-        <button type="submit">追加</button>
-        <button type="button" id="close-modal">キャンセル</button>
+        <input type="text" name="title" placeholder="タイトル" required>
+        <textarea name="content" placeholder="内容"></textarea>
+        <button type="submit">タスク追加</button>
+         <button type="button" id="close-task-modal">キャンセル</button>
     </form>
 </div>
