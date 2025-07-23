@@ -13,66 +13,62 @@ app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
 @app.route("/admin")
 def admin():
+    category_id = request.args.get("category_id")  # ← URLパラメータ取得
     with SessionLocal() as session:
-        posts = session.query(Post).options(selectinload(Post.category)).all()
+        categories = {str(c.id): c.name for c in session.query(Category).all()}
 
-        # カテゴリごとに投稿をグループ化
-        category_map = {}
-
-        for post in posts:
-            category_name = post.category.name if post.category else "未分類"
-            category_map.setdefault(category_name, []).append(post)
-
-    return render_template("admin.html", category_map=category_map)
-
-
-@app.route("/create", methods=["GET", "POST"])
-def create():
-    with SessionLocal() as session:
-        if request.method == "POST":
-            title = request.form["post_title"]
-            content = request.form["post_content"]
-            category_name = request.form["post_category"]
-
-            category = Category(name=category_name)
-            category = (
-                session.query(Category).filter_by(name=category_name).first()
+        if category_id:
+            # 指定されたカテゴリの投稿だけ取得
+            posts = (
+                session.query(Post)
+                .filter(Post.category_id == category_id)
+                .options(selectinload(Post.category))
+                .all()
+            )
+        else:
+            # 全ての投稿を取得
+            posts = (
+                session.query(Post).options(selectinload(Post.category)).all()
             )
 
-            if not category:
-                category = Category(id=uuid.uuid4(), name=category_name)
-                session.add(category)
-                session.commit()
+    return render_template(
+        "admin.html",
+        categories=categories,
+        posts=posts,
+        selected_category_id=category_id,
+    )
 
-            # サーバー側でバリデーション
-            # content（本文）は必須ではありません
-            if not title or not category_name:
-                categories = session.query(Category).all()
-                error = "タイトルとカテゴリーは必須です"
-                return render_template(
-                    "create.html", categories=categories, error=error
-                )
 
-            # 投稿を作成
-            # 仮のユーザーを取得（ログイン機能があればセッションから）
-            user = session.query(User).first()
+@app.route("/admin/create", methods=["POST"])
+def create_post():
+    title = request.form["title"]
+    content = request.form["content"]
+    category_name = request.form["category_name"]
 
-            new_post = Post(
-                id=uuid.uuid4(),
-                title=title,
-                content=content,
-                category_id=category.id,
-                user_id=user.id,  # 仮のユーザーIDを指定,
-                completed=False,
-            )
-            session.add(new_post)
-            session.commit()
+    with SessionLocal() as session:
+        # カテゴリがすでに存在するかチェック
+        category = (
+            session.query(Category).filter_by(name=category_name).first()
+        )
+        if not category:
+            category = Category(id=uuid.uuid4(), name=category_name)
+            session.add(category)
+            session.flush()  # category.id を得るため
 
-            return redirect(url_for("admin"))  # 投稿後、adminページへ
+        # 仮のユーザーを取得（ログイン機能があればセッションから）
+        user = session.query(User).first()
 
-        # GET時：カテゴリ一覧を取得してフォームに渡す
-        categories = session.query(Category).all()
-    return render_template("create.html", categories=categories)
+        new_post = Post(
+            id=uuid.uuid4(),
+            title=title,
+            content=content,
+            category_id=category.id,
+            user_id=user.id,
+            completed=False,
+        )
+        session.add(new_post)
+        session.commit()
+    return redirect(url_for("admin"))
 
 
 @app.route("/register", methods=["GET", "POST"])

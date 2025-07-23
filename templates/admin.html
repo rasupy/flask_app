@@ -14,42 +14,51 @@
 <!-- CATEGORY 
 ================================================= -->
     <article class="card">
-        <h2 class="title">Category</h2>
+        <div class="title-bar">
+            <h2 class="title">Category</h2>
+        </div>
+        <!-- カテゴリー一覧 -->
         <ul class="category-list">
-            {% for category_name, posts in category_map.items() %}
-                {% if category_name %}
-                    <li class="category-item">{{ category_name }}</li>
-                {% else %}
-                    <li class="category-item">No categories available.</li>
-                {% endif %}
-            {% endfor %}
+        {% for id, name in categories.items() %}
+            <li class="category-item">
+                <a href="{{ url_for('admin', category_id=id) }}" class="{% if selected_category_id == id %}active{% endif %}">{{ name }}</a>
+            </li>
+        {% endfor %}
         </ul>
     </article>
 <!-- TASK 
 ================================================= -->
     <article class="card">
-        <h2 class="title">Task</h2>
+        <div class="title-bar">
+            <h2 class="title">Task</h2>
+            <button id="open-modal" class="add-post-btn">＋</button>
+        </div>
+        <!-- タスク追加フォームを読み込み -->
+        {% include "add_task.html" %}
+        <!-- タスク一覧 -->
         <ul class="task-list">
-            {% for category_name, posts in category_map.items() %}
+            {% if posts %}
                 {% for post in posts %}
-                    <li class="task-item">{{ post.title }}
-                        <button class="task-btn">Edit</button>
-                    </li>
+                    <li class="task-item">{{ post.title }}</li>
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
         </ul>
     </article>
 <!-- PROGRESS 
 ================================================= -->
     <article class="card">
-        <h2 class="title">Progress</h2>
+        <div class="title-bar">
+            <h2 class="title">Progress</h2>
+        </div>
         <ul class="progress-list">
         </ul>
     </article>
 <!-- ARCHIVE 
 ================================================= -->
     <article class="card">
-        <h2 class="title">Archive</h2>
+        <div class="title-bar">
+            <h2 class="title">Archive</h2>
+        </div>
         <ul class="archive-list">
         </ul>
     </article>

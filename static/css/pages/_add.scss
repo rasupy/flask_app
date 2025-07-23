@@ -1,0 +1,32 @@
+// タスク追加ボタンの装飾
+@use '../base/variables' as var;
+
+.modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-post-btn {
+  background: var.$bg;
+  color: var.$tc;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: .5s;
+  cursor: pointer;
+}
+
+.add-post-btn:hover {
+    background: var.$hover-bg;
+}

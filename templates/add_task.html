@@ -1,0 +1,17 @@
+<!-- タスク追加用フォーム ---------------------------------------->
+<div id="modal" class="modal hidden">
+    <form action="{{ url_for('create_post') }}" method="post" class="modal-form">
+        <h2>新しい投稿</h2>
+        <label>タイトル:</label>
+        <input type="text" name="title" required>
+    
+        <label>内容:</label>
+        <textarea name="content"></textarea>
+    
+        <label>カテゴリー名:</label>
+        <input type="text" name="category_name" required>
+
+        <button type="submit">追加</button>
+        <button type="button" id="close-modal">キャンセル</button>
+    </form>
+</div>
