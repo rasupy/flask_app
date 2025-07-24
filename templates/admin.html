@@ -42,10 +42,18 @@
         <ul class="task-list">
             {% if posts %}
                 {% for post in posts %}
-                    <li class="task-item">{{ post.title }}</li>
+                    <li class="task-item"
+                        data-id="{{ post.id }}"
+                        data-title="{{ post.title }}"
+                        data-content="{{ post.content }}"
+                        data-category="{{ post.category_id }}">
+                        {{ post.title }}
+                    </li>
                 {% endfor %}
             {% endif %}
         </ul>
+        <!-- 編集フォームを追加読み込み -->
+        {% include "edit_task.html" %}
     </article>
 <!-- PROGRESS 
 ================================================= -->
