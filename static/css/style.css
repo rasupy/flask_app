@@ -152,6 +152,7 @@ html, body {
   border: 1px solid #000;
   border-radius: 0.25rem;
   padding: 0.5rem;
+  cursor: pointer;
   transition: 0.5s;
 }
 
