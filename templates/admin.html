@@ -22,11 +22,11 @@
         {% include "add_category.html" %}
         <!-- カテゴリー一覧 -->
         <ul class="category-list">
-        {% for id, name in categories.items() %}
-            <li class="category-item">
-                <a href="{{ url_for('admin', category_id=id) }}" class="{% if selected_category_id == id %}active{% endif %}">{{ name }}</a>
-            </li>
-        {% endfor %}
+            {% for id, name in categories.items() %}
+                <li class="category-item" data-category-id="{{ id }}">
+                    <button class="category-button {% if selected_category_id == id %}active{% endif %}">{{ name }}</button>
+                </li>
+            {% endfor %}
         </ul>
     </article>
 <!-- TASK 
@@ -74,4 +74,15 @@
         </ul>
     </article>
 </section>
+{% endblock %}
+
+<!-- JavaScriptの読み込み -->
+{% block scripts %}
+    <script id="all-posts-data" type="application/json">
+        {{ category_posts | tojson | safe }}
+    </script>
+    <script src="{{ url_for('static', filename='js/show_tables.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/add_category.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/add_task.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/edit_task.js') }}" defer></script>
 {% endblock %}

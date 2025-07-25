@@ -56,21 +56,24 @@ html, body {
     padding-left: 0;
 }
 
-.category-item,
-.category-item a {
-    font-size: 1.2rem;
-    transition: .5s;
-    color: inherit;
-    text-decoration: none;
-}
+.category-button {
+  font-size: 1.2rem;
+  padding: .2rem;
+  border: none;
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: inherit;
 
-.category-item a.active {
-    color: var.$tc;
+  &:hover {
+    box-shadow: var.$box-shadow-hover;
+  }
+
+  &.active {
     font-weight: bold;
-}
-
-.category-item:hover {
-    text-shadow: var.$box-shadow-hover;
+    text-shadow: var.$box-shadow;
+  }
 }
 
 /* タスクリスト

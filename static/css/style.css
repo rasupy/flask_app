@@ -55,21 +55,22 @@ html, body {
   padding-left: 0;
 }
 
-.category-item,
-.category-item a {
+.category-button {
   font-size: 1.2rem;
-  transition: 0.5s;
+  padding: 0.2rem;
+  border: none;
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
   color: inherit;
-  text-decoration: none;
 }
-
-.category-item a.active {
-  color: #333;
+.category-button:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.category-button.active {
   font-weight: bold;
-}
-
-.category-item:hover {
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* タスクリスト
@@ -91,7 +92,7 @@ html, body {
 }
 
 .task-item:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .task-btn {

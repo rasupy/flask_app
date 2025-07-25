@@ -1,27 +1,32 @@
-// タスク編集モーダル要素
-const editModal = document.getElementById("edit-modal");
-const editForm = document.getElementById("edit-form");
-const cancelEditBtn = document.getElementById("cancel-edit");
+document.addEventListener("DOMContentLoaded", () => {
+  const taskList = document.querySelector(".task-list");
+  const editModal = document.getElementById("edit-modal");
+  const editForm = document.getElementById("edit-form");
+  const cancelBtn = document.getElementById("cancel-edit");
 
-// タスク編集モーダルを開く（タスクをクリックしたとき）
-document.querySelectorAll(".task-item").forEach(item => {
-    item.addEventListener("click", () => {
-        const id = item.dataset.id;
-        const title = item.dataset.title;
-        const content = item.dataset.content;
-        const category = item.dataset.category;
+  // 1) タスク一覧全体にクリックイベントをひとまとめにバインド
+  taskList.addEventListener("click", (e) => {
+    // 本当に .task-item をクリックしたかチェック
+    const item = e.target.closest(".task-item");
+    if (!item) return;
 
-        // モーダル内のform要素に値をセット
-        editForm.action = `/admin/edit_task/${id}`;
-        editForm.title.value = title;
-        editForm.content.value = content;
-        editForm.category_id.value = category;
+    const taskId     = item.dataset.id;
+    const title      = item.dataset.title;
+    const content    = item.dataset.content;
+    const categoryId = item.dataset.category;
 
-        editModal.classList.remove("hidden");
-    });
-});
+    // フォームに値をセット
+    editForm.action = `/admin/edit_task/${taskId}`;
+    editForm.querySelector('input[name="title"]').value            = title;
+    editForm.querySelector('textarea[name="content"]').value        = content;
+    editForm.querySelector('select[name="category_id"]').value      = categoryId;
 
-// キャンセルボタンで閉じる
-cancelEditBtn.addEventListener("click", () => {
+    // モーダル表示
+    editModal.classList.remove("hidden");
+  });
+
+  // 2) キャンセルでクローズ
+  cancelBtn.addEventListener("click", () => {
     editModal.classList.add("hidden");
+  });
 });

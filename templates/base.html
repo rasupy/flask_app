@@ -14,15 +14,12 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- JavaScriptの読み込み -->
-    <script src="{{ url_for('static', filename='js/add_category.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/add_task.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/edit_task.js') }}" defer></script>
 </head>
 <body>
     
     {% block content %}
     {% endblock %}
+    {% block scripts %}{% endblock %}
 
 </body>
 </html>

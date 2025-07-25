@@ -16,24 +16,30 @@ def admin():
     category_id = request.args.get("category_id")
     with SessionLocal() as session:
         categories = {str(c.id): c.name for c in session.query(Category).all()}
+        posts = session.query(Post).options(selectinload(Post.category)).all()
 
-        if category_id:
-            posts = (
-                session.query(Post)
-                .filter(Post.category_id == category_id)
-                .options(selectinload(Post.category))
-                .all()
-            )
-        else:
-            posts = (
-                session.query(Post).options(selectinload(Post.category)).all()
+        # 全投稿 → カテゴリーごとに分類
+        category_posts = {}
+        for post in posts:
+            cid = str(post.category_id)
+            category_posts.setdefault(cid, []).append(
+                {
+                    "id": post.id,
+                    "title": post.title,
+                    "content": post.content,
+                    "category_id": post.category_id,
+                    "category_name": (
+                        post.category.name if post.category else ""
+                    ),
+                }
             )
 
     return render_template(
         "admin.html",
-        posts=posts,
+        posts=[],  # 最初は空表示
         categories=categories,
         selected_category_id=category_id,
+        category_posts=category_posts,
     )
 
 
