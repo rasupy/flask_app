@@ -1,4 +1,21 @@
 @charset "UTF-8";
+/* メインタイトルのアニメーション
+=================================================== */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+#main-title {
+  opacity: 0; /* 初期は透明 */
+  animation: fadeSlideIn 0.8s ease-out forwards;
+}
+
 /* カードのアニメーション
 =================================================== */
 @keyframes slideIn {
@@ -55,7 +72,7 @@ html, body {
   overflow-y: hidden;
 }
 
-.main-title {
+#main-title {
   font-size: 1.5rem;
   margin-top: 1rem;
   margin-left: 1rem;
