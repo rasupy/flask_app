@@ -1,0 +1,23 @@
+/* カードのアニメーション
+=================================================== */
+@keyframes slideIn {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.card {
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+    // 遅延は nth-child で
+    @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+        animation-delay: #{0.1 * $i}s;  
+        }
+    }
+}
