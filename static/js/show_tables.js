@@ -13,10 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const categoryId = item.dataset.categoryId;
             const tasks = allPosts[categoryId];
 
-            // タイトルの上書き
-            const categoryName = item.querySelector("button").textContent;
-            taskTitle.textContent = `Task - ${categoryName}`;
-
             // タスクの描画
             taskList.innerHTML = "";
             if (!tasks || tasks.length === 0) {
