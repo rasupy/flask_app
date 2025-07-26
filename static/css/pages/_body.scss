@@ -97,7 +97,7 @@ html, body {
   }
 
   &.active {
-    font-weight: bold;
+    font-weight: bold !important;
     text-shadow: var.$box-shadow;
   }
 }

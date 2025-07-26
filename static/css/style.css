@@ -159,7 +159,7 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .category-button.active {
-  font-weight: bold;
+  font-weight: bold !important;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 

@@ -1,16 +1,21 @@
-const raw = document.getElementById("all-posts-data").textContent;
-const allPosts = JSON.parse(raw);
-console.log("Loaded posts:", allPosts);
-
+//　カテゴリーテーブルの表示とタスクの描画
 document.addEventListener("DOMContentLoaded", () => {
+    const raw = document.getElementById("all-posts-data").textContent;
+    const allPosts = JSON.parse(raw);
+
     const taskList = document.querySelector(".task-list");
-    const taskTitle = document.querySelector(".title-bar .title");
+    const buttons = document.querySelectorAll('.category-button');
 
-    const categoryItems = document.querySelectorAll(".category-item");
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();  // 親要素に伝播しないように
 
-    categoryItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const categoryId = item.dataset.categoryId;
+            // active クラスの切り替え
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // カテゴリIDの取得
+            const categoryId = button.closest(".category-item").dataset.categoryId;
             const tasks = allPosts[categoryId];
 
             // タスクの描画

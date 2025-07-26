@@ -25,13 +25,15 @@
         {% include "add_category.html" %}
         <!-- カテゴリー一覧 -->
         <ul class="category-list">
-            {% for id, name in categories.items() %}
+           {% for id, name in categories.items() %}
                 <li class="category-item" data-category-id="{{ id }}">
-                    <!-- 削除アイコンボタン（初期は非表示） -->
+                    <!-- 削除ボタン -->
                     <button class="delete-category-btn hidden" data-category-id="{{ id }}">🗑</button>
-                    
+
+                    <!-- カテゴリ選択ボタン -->
                     <button class="category-button {% if selected_category_id == id %}active{% endif %}">
-                    {{ name }}</button>
+                    {{ name }}
+                    </button>
                 </li>
             {% endfor %}
         </ul>
