@@ -111,6 +111,32 @@ html, body {
 
 /* カテゴリーリスト
 =================================================== */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.1rem;
+}
+
+.create-category-btn,
+.delete-category-btn {
+  padding: 0.2rem 0.5rem;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.create-category-btn:hover,
+.delete-category-btn:hover {
+  background: #f0f0f0;
+}
+
+.delete-category-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .category-list {
   display: flex;
   flex-direction: column;

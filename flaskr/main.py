@@ -20,6 +20,7 @@ def admin():
 
         # 全投稿 → カテゴリーごとに分類
         category_posts = {}
+
         for post in posts:
             cid = str(post.category_id)
             category_posts.setdefault(cid, []).append(
@@ -47,11 +48,30 @@ def admin():
 @app.route("/admin/add_category", methods=["POST"])
 def add_category():
     category_name = request.form["category_name"]
+
     with SessionLocal() as session:
         new_category = Category(name=category_name)
         session.add(new_category)
         session.commit()
+
     return redirect(url_for("admin"))
+
+
+# カテゴリの削除処理
+@app.route("/admin/delete_category/<category_id>", methods=["POST"])
+def delete_category(category_id):
+    with SessionLocal() as session:
+        category = session.query(Category).filter_by(id=category_id).first()
+
+        if not category:
+            return "カテゴリが見つかりません", 404
+
+        # 関連するタスクも削除
+        session.query(Post).filter_by(category_id=category_id).delete()
+        session.delete(category)
+        session.commit()
+
+    return "", 204
 
 
 # タスクの追加処理
@@ -79,6 +99,7 @@ def add_task():
         )
         session.add(new_post)
         session.commit()
+
     return redirect(url_for("admin"))
 
 
@@ -91,6 +112,7 @@ def edit_task(task_id):
 
     with SessionLocal() as session:
         post = session.query(Post).filter_by(id=task_id).first()
+
         if not post:
             return "Task not found", 404
 
@@ -107,11 +129,13 @@ def edit_task(task_id):
 def delete_task(task_id):
     with SessionLocal() as session:
         post = session.query(Post).filter_by(id=task_id).first()
+
         if not post:
             return "Task not found", 404
 
         session.delete(post)
         session.commit()
+
     return "", 204  # 成功時は No Content を返す
 
 

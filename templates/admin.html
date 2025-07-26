@@ -16,15 +16,22 @@
     <article class="card">
         <div class="title-bar">
             <h2 class="title">Category</h2>
-            <button id="open-category-modal" class="add-post-btn">＋</button>
+            <div class="button-group">
+                <button id="create-category-btn">＋</button>
+                <button id="delete-toggle">削除</button>
+            </div>
         </div>
-        <!-- タスク追加フォームを読み込み -->
+        <!-- カテゴリー追加フォームを読み込み -->
         {% include "add_category.html" %}
         <!-- カテゴリー一覧 -->
         <ul class="category-list">
             {% for id, name in categories.items() %}
                 <li class="category-item" data-category-id="{{ id }}">
-                    <button class="category-button {% if selected_category_id == id %}active{% endif %}">{{ name }}</button>
+                    <!-- 削除アイコンボタン（初期は非表示） -->
+                    <button class="delete-category-btn hidden" data-category-id="{{ id }}">🗑</button>
+                    
+                    <button class="category-button {% if selected_category_id == id %}active{% endif %}">
+                    {{ name }}</button>
                 </li>
             {% endfor %}
         </ul>
@@ -34,7 +41,7 @@
     <article class="card">
         <div class="title-bar">
             <h2 class="title">Task</h2>
-            <button id="open-modal" class="add-post-btn">＋</button>
+            <button id="open-modal" class="create-category-btn">＋</button>
         </div>
         <!-- タスク追加フォームを読み込み -->
         {% include "add_task.html" %}
@@ -83,6 +90,7 @@
     </script>
     <script src="{{ url_for('static', filename='js/show_tables.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/add_category.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/delete_category.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/add_task.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/edit_task.js') }}" defer></script>
 {% endblock %}
