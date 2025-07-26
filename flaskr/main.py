@@ -102,6 +102,19 @@ def edit_task(task_id):
     return redirect(url_for("admin"))
 
 
+# タスクの削除処理
+@app.route("/admin/delete_task/<task_id>", methods=["POST"])
+def delete_task(task_id):
+    with SessionLocal() as session:
+        post = session.query(Post).filter_by(id=task_id).first()
+        if not post:
+            return "Task not found", 404
+
+        session.delete(post)
+        session.commit()
+    return "", 204  # 成功時は No Content を返す
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     return render_template("register.html")
