@@ -3,12 +3,13 @@
 
 ### 開発言語/フレームワークなど
 - Python3
-- HTML-CSS
-- JavaScript
+- HTML-CSS / SASS
+- JavaScript → TypeScript 移行予定
 - Flask
 - SQLAlchemy
 - PostgreSQL
 - VScode-WSL2
+- Venv → Docker 移行予定
 
 #### 完成のイメージ
 1. カテゴリーを作成する。</br>
