@@ -35,7 +35,7 @@
     // 遅延は nth-child で
     @for $i from 1 through 10 {
         &:nth-child(#{$i}) {
-        animation-delay: #{0.1 * $i}s;  
+            animation-delay: #{0.1 * $i}s;  
         }
     }
 }

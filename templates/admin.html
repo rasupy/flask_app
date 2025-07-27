@@ -1,6 +1,7 @@
+{# admin.html #}
 {% extends "base.html" %}
-{% block title %}Admin - Todo-App{% endblock %}
 
+{% block title %}Admin - Todo-App{% endblock %}
 {% block content %}
 <!-- HEADER
 ================================================= -->
@@ -8,79 +9,23 @@
     <h2 id="main-title">Admin Todo-App</h2>
 </header>
 
-<!-- MAIN CONTENTS
-================================================= -->
+<!-- MAIN CONTENTS -->
 <section id="contents">
-<!-- CATEGORY 
-================================================= -->
+    <!-- CATEGORY -->
     <article class="card">
-        <div class="title-bar">
-            <h2 class="title">Category</h2>
-            <div class="button-group">
-                <button id="create-category-btn">＋</button>
-                <button id="delete-toggle">削除</button>
-            </div>
-        </div>
-        <!-- カテゴリー追加フォームを読み込み -->
-        {% include "add_category.html" %}
-        <!-- カテゴリー一覧 -->
-        <ul class="category-list">
-           {% for id, name in categories.items() %}
-                <li class="category-item" data-category-id="{{ id }}">
-                    <!-- 削除ボタン -->
-                    <button class="delete-category-btn hidden" data-category-id="{{ id }}">🗑</button>
-
-                    <!-- カテゴリ選択ボタン -->
-                    <button class="category-button {% if selected_category_id == id %}active{% endif %}">
-                    {{ name }}
-                    </button>
-                </li>
-            {% endfor %}
-        </ul>
+        {% include "category.html" %}
     </article>
-<!-- TASK 
-================================================= -->
+    <!-- TASK -->
     <article class="card">
-        <div class="title-bar">
-            <h2 class="title">Task</h2>
-            <button id="open-modal" class="create-category-btn">＋</button>
-        </div>
-        <!-- タスク追加フォームを読み込み -->
-        {% include "add_task.html" %}
-        <!-- タスク一覧 -->
-        <ul class="task-list">
-            {% if posts %}
-                {% for post in posts %}
-                    <li class="task-item"
-                        data-id="{{ post.id }}"
-                        data-title="{{ post.title }}"
-                        data-content="{{ post.content }}"
-                        data-category="{{ post.category_id }}">
-                        {{ post.title }}
-                    </li>
-                {% endfor %}
-            {% endif %}
-        </ul>
-        <!-- 編集フォームを追加読み込み -->
-        {% include "edit_task.html" %}
+        {% include "task.html" %}
     </article>
-<!-- PROGRESS 
-================================================= -->
+    <!-- PROGRESS -->
     <article class="card">
-        <div class="title-bar">
-            <h2 class="title">Progress</h2>
-        </div>
-        <ul class="progress-list">
-        </ul>
+        {% include "progress.html" %}
     </article>
-<!-- ARCHIVE 
-================================================= -->
+    <!-- ARCHIVE -->
     <article class="card">
-        <div class="title-bar">
-            <h2 class="title">Archive</h2>
-        </div>
-        <ul class="archive-list">
-        </ul>
+        {% include "archive.html" %}
     </article>
 </section>
 {% endblock %}

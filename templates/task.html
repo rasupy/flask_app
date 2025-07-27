@@ -1,0 +1,28 @@
+<!-- タスクを表示するテンプレート -->
+{# task.html #}
+{% extends "admin.html" %}
+
+{% block content %}
+    <div class="title-bar">
+        <h2 class="title">Task</h2>
+        <button id="open-modal" class="create-category-btn">＋</button>
+    </div>
+    <!-- タスク追加フォームを読み込み -->
+    {% include "add_task.html" %}
+    <!-- タスク一覧 -->
+    <ul class="task-list">
+        {% if posts %}
+            {% for post in posts %}
+                <li class="task-item"
+                    data-id="{{ post.id }}"
+                    data-title="{{ post.title }}"
+                    data-content="{{ post.content }}"
+                    data-category="{{ post.category_id }}">
+                    {{ post.title }}
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+    <!-- 編集フォームを追加読み込み -->
+    {% include "edit_task.html" %}
+{% endblock %}
