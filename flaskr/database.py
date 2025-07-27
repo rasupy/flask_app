@@ -3,7 +3,7 @@
 # ==========================================================
 from sqlalchemy import create_engine, inspect, select, or_, update, delete
 from sqlalchemy.orm import Session, selectinload, sessionmaker
-from models import Base, User, Post
+from .models import Base, User, Post, Category
 from datetime import date
 from dotenv import load_dotenv  # type: ignore
 import os
@@ -24,6 +24,12 @@ def main():
         db_url,
         echo=True,
     )
+
+    with Session(engine) as session:
+        categories = session.query(Category).all()
+        for index, cat in enumerate(categories):
+            cat.sort_order = index
+        session.commit()
 
     """ データベースの情報を取得
     inspector = inspect(engine)

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flaskr.db import SessionLocal
 from flaskr.models import Post, Category, User
 from sqlalchemy.orm import selectinload
@@ -16,7 +16,13 @@ def admin():
     category_id = request.args.get("category_id")
 
     with SessionLocal() as session:
-        categories = {str(c.id): c.name for c in session.query(Category).all()}
+        # カテゴリの取得を並び順にソート
+        categories = {
+            str(c.id): c.name
+            for c in session.query(Category)
+            .order_by(Category.sort_order)
+            .all()
+        }
         posts = session.query(Post).options(selectinload(Post.category)).all()
 
         # 未選択なら最初のカテゴリをデフォルトに
@@ -46,6 +52,38 @@ def admin():
         selected_category_id=None,
         category_posts=category_posts,
     )
+
+
+# カテゴリーの並べ替え
+@app.route("/update_category_order", methods=["POST"])
+def update_category_order():
+    data = request.get_json()
+
+    if not data or "category_ids" not in data:
+        return jsonify({"error": "No category_ids provided"}), 400
+
+    try:
+        with SessionLocal() as session:
+            for index, category_id_str in enumerate(data["category_ids"]):
+                try:
+                    category_id = uuid.UUID(category_id_str)
+                    category = session.get(Category, category_id)
+
+                    if category:
+                        category.sort_order = index
+
+                except ValueError:
+
+                    return (
+                        jsonify({"error": f"Invalid UUID: {category_id_str}"}),
+                        400,
+                    )
+
+            session.commit()
+        return jsonify({"message": "Category order updated"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # カテゴリの追加処理

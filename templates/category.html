@@ -13,7 +13,7 @@
     <!-- カテゴリー追加フォームを読み込み -->
     {% include "add_category.html" %}
     <!-- カテゴリー一覧 -->
-    <ul class="category-list">
+    <ul class="category-list" id="category-list">
         {% for id, name in categories.items() %}
             <li class="category-item" data-category-id="{{ id }}">
                 <!-- 削除ボタン -->

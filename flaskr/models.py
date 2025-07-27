@@ -1,5 +1,13 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import Text, Uuid, ForeignKey, DateTime
+from sqlalchemy import (
+    Text,
+    Uuid,
+    ForeignKey,
+    DateTime,
+    Column,
+    Integer,
+    String,
+)
 import uuid
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -43,7 +51,7 @@ class User(Base):
 
 
 # categories テーブルの定義（カテゴリ管理機能）
-# カテゴリID、カテゴリ名
+# カテゴリID、カテゴリ名、並び順
 class Category(Base):
     __tablename__ = "categories"
 
@@ -57,6 +65,12 @@ class Category(Base):
         nullable=False,
         unique=True,
     )
+    sort_order: Mapped[int] = mapped_column(
+        Integer,
+        default=0,
+        nullable=False,
+    )
+
     post: Mapped[list["Post"]] = relationship(back_populates="category")
 
 
