@@ -116,6 +116,26 @@ def delete_category(category_id):
     return "", 204
 
 
+# タスクの並び替え、移動処理
+@app.route("/update_task_order", methods=["POST"])
+def update_task_order():
+    data = request.get_json()
+    if "tasks" not in data:
+        return jsonify({"error": "No task data provided"}), 400
+
+    with SessionLocal() as session:
+        for task_data in data["tasks"]:
+            task_id = uuid.UUID(task_data["id"])
+            task = session.get(Post, task_id)
+
+            if task:
+                task.sort_order = task_data["sort_order"]
+                task.status = task_data["status"]
+
+        session.commit()
+        return jsonify({"message": "Tasks updated"})
+
+
 # タスクの追加処理
 @app.route("/admin/add_task", methods=["POST"])
 def add_task():
