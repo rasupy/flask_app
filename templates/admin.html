@@ -12,20 +12,22 @@
 <!-- MAIN CONTENTS -->
 <section id="contents">
     <!-- CATEGORY -->
-    <article class="card">
+    <div class="card">
         {% include "category.html" %}
-    </article>
-    <!-- TASK -->
-    <article class="card">
-        {% include "task.html" %}
-    </article>
-    <!-- PROGRESS -->
-    <article class="card">
-        {% include "progress.html" %}
-    </article>
-    <!-- ARCHIVE -->
-    <article class="card">
-        {% include "archive.html" %}
+    </div>
+    <article class="cards">
+        <!-- TASK -->    
+        <div class="card">
+            {% include "task.html" %}
+        </d>
+        <!-- PROGRESS -->
+        <div class="card">
+            {% include "progress.html" %}
+        </div>
+        <!-- ARCHIVE -->
+        <div class="card">
+            {% include "archive.html" %}
+        </div>
     </article>
 </section>
 {% endblock %}
