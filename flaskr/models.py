@@ -75,7 +75,7 @@ class Category(Base):
 
 
 # posts テーブルの定義(記事投稿機能)
-# 記事ID、記事タイトル、記事内容、完了状態, ユーザーID、カテゴリID
+# 記事ID、記事タイトル、記事内容、状態、並び、ユーザーID、カテゴリID
 class Post(Base):
     __tablename__ = "posts"
 
@@ -92,10 +92,6 @@ class Post(Base):
         Text,
         nullable=True,
     )
-    completed: Mapped[bool] = mapped_column(
-        default=False,
-        nullable=False,
-    )
     user_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("users.id"),
         nullable=False,
@@ -103,6 +99,15 @@ class Post(Base):
     category_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("categories.id"),
         nullable=False,
+    )
+    status: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        default="todo",
+    )
+    sort_order: Mapped[int] = mapped_column(
+        Integer,
+        default=0,
     )
     user: Mapped["User"] = relationship(back_populates="post")
     category: Mapped["Category"] = relationship(back_populates="post")

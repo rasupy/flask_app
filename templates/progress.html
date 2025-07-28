@@ -1,4 +1,4 @@
-<!-- Progressを表示するテンプレート -->
+<!-- プログレスを表示するテンプレート -->
 {# progress.html #}
 {% extends "admin.html" %}
 
@@ -6,6 +6,16 @@
     <div class="title-bar">
         <h2 class="title">Progress</h2>
     </div>
-    <ul class="progress-list">
+    <ul id="progress-tasks" class="task-list" data-status="progress">
+        {% for post in posts if post.status == 'progress' %}
+            <li class="task-item"
+                data-id="{{ post.id }}"
+                data-title="{{ post.title }}"
+                data-content="{{ post.content }}"
+                data-category="{{ post.category_id }}"
+                data-status="{{ post.status }}">
+                {{ post.title }}
+            </li>
+        {% endfor %}
     </ul>
 {% endblock %}
