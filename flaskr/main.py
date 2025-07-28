@@ -120,20 +120,23 @@ def delete_category(category_id):
 @app.route("/update_task_order", methods=["POST"])
 def update_task_order():
     data = request.get_json()
-    if "tasks" not in data:
-        return jsonify({"error": "No task data provided"}), 400
+    # print("受け取ったデータ:", data)  # デバッグ用
+
+    if "posts" not in data:
+        return jsonify({"error": "No posts data provided"}), 400
 
     with SessionLocal() as session:
-        for task_data in data["tasks"]:
-            task_id = uuid.UUID(task_data["id"])
-            task = session.get(Post, task_id)
+        for post_data in data["posts"]:
+            # print("個別のでデータ:", post_data)  # デバッグ用
+            post_id = uuid.UUID(post_data["id"])
+            post = session.get(Post, post_id)
 
-            if task:
-                task.sort_order = task_data["sort_order"]
-                task.status = task_data["status"]
+            if post:
+                post.sort_order = post_data["sort_order"]
+                post.status = post_data["status"]
 
         session.commit()
-        return jsonify({"message": "Tasks updated"})
+        return jsonify({"message": "Posts updated"})
 
 
 # タスクの追加処理

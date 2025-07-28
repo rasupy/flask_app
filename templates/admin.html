@@ -37,8 +37,15 @@
     <script id="all-posts-data" type="application/json">
         {{ category_posts | tojson | safe }}
     </script>
-    <script src="{{ url_for('static', filename='js/show_tables.js') }}" defer></script>
+
+    <!-- 先にユーティリティ関数（関数定義）を読み込む -->
+    <script src="{{ url_for('static', filename='js/task_utils.js') }}" defer></script>
+
+    <!-- 並び替え系 -->
     <script src="{{ url_for('static', filename='js/sortable.js') }}" defer></script>
+
+    <!-- カテゴリ・タスク操作系 -->
+    <script src="{{ url_for('static', filename='js/show_tables.js') }}", defer></script>
     <script src="{{ url_for('static', filename='js/add_category.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/delete_category.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/add_task.js') }}" defer></script>

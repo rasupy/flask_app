@@ -1,65 +1,37 @@
-// カテゴリーをドラッグで並べ替えする機能
+// 並び替え、移動機能
 document.addEventListener("DOMContentLoaded", () => {
+    // カテゴリー並び替え
     const categoryList = document.getElementById("category-list");
 
-    Sortable.create(categoryList, {
-        animation: 150,
-        onEnd: function () {
-            // 並び替え後のID順を取得
-            const newOrder = [];
-            document.querySelectorAll(".category-item").forEach(item => {
-                newOrder.push(item.dataset.categoryId);
-            });
-
-            // サーバーに送信
-            fetch("/update_category_order", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ category_ids: newOrder })
-            }).then(res => {
-                if (!res.ok) {
-                    console.error("順序の更新に失敗しました");
-                }
-            });
-        }
-    });
-});
-
-// タスクをドラッグで並べ替え、移動する機能
-document.addEventListener("DOMContentLoaded", () => {
-    const taskColumns = document.querySelectorAll(".task-list");
-
-    taskColumns.forEach(column => {
-        Sortable.create(column, {
-            group: "tasks",
+    if (categoryList) {
+        Sortable.create(categoryList, {
             animation: 150,
-            onEnd: function (evt) {
-                const newStatus = evt.to.dataset.status;
-                const taskElements = evt.to.querySelectorAll(".task-item");
+            onEnd: function () {
                 const newOrder = [];
-
-                taskElements.forEach((el, index) => {
-                    newOrder.push({
-                        id: el.dataset.taskId,
-                        sort_order: index,
-                        status: newStatus
-                    });
+                document.querySelectorAll(".category-item").forEach(item => {
+                    newOrder.push(item.dataset.categoryId);
                 });
 
-                // サーバーへ送信
-                fetch("/update_task_order", {
+                fetch("/update_category_order", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ tasks: newOrder })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ category_ids: newOrder })
                 }).then(res => {
                     if (!res.ok) {
-                        console.error("タスクの更新に失敗しました");
+                        console.error("順序の更新に失敗しました");
                     }
                 });
+            }
+        });
+    }
+
+    // タスク並び替えと移動
+    document.querySelectorAll(".task-list").forEach(list => {
+        Sortable.create(list, {
+            group: "tasks",
+            animation: 150,
+            onEnd: function () {
+                sendTaskOrderUpdate();
             }
         });
     });
