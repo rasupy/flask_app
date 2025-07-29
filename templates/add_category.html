@@ -1,11 +1,13 @@
-<!-- カテゴリー追加用フォーム ---------------------------------------->
+<!-- カテゴリー追加用モーダル ---------------------------------------->
 <div id="category-modal" class="modal hidden">
     <form action="{{ url_for('add_category') }}" method="post" class="modal-form">
-        <h2>新しいカテゴリー</h2>
-        <label for="category_name">カテゴリー名:</label>
-        <input type="text" id="category_name" name="category_name" required>
-    
-        <button type="submit">追加</button>
-        <button type="button" id="close-category-modal">キャンセル</button>
+        <h2 class="modal-title">New Category</h2>
+        <label class="category-label" for="category_name">Category Name:</label>
+        <input type="text" id="category_name" class="textbox-category" name="category_name" required>
+
+        <div class="modal-btns">
+            <button type="submit" class="modal-btn">Add</button>
+            <button type="button" id="close-category-modal" class="modal-btn">Cancel</button>
+        </div>
     </form>
 </div>
