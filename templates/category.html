@@ -1,29 +1,25 @@
 <!-- カテゴリー一覧を表示するテンプレート -->
 {# category.html #}
-{% extends "admin.html" %}
-
-{% block content %}
-    <div class="title-bar">
-        <h2 class="title">Category</h2>
-        <div class="button-group">
-            <button id="create-category-btn" class="material-symbols-outlined">add</button>
-            <button id="delete-toggle" class="material-symbols-outlined">delete</button>
-        </div>
+<div class="title-bar">
+    <h2 class="title">Category</h2>
+    <div class="button-group">
+        <button id="create-category-btn" class="material-symbols-outlined">add</button>
+        <button id="delete-toggle" class="material-symbols-outlined">delete</button>
     </div>
-    <!-- カテゴリー追加フォームを読み込み -->
-    {% include "add_category.html" %}
-    <!-- カテゴリー一覧 -->
-    <ul class="category-list" id="category-list">
-        {% for id, name in categories.items() %}
-            <li class="category-item" data-category-id="{{ id }}">
-                <!-- 削除ボタン -->
-                <button class="delete-category-btn material-symbols-outlined hidden" data-category-id="{{ id }}">delete</button>
+</div>
+<!-- カテゴリー追加フォームを読み込み -->
+{% include "add_category.html" %}
+<!-- カテゴリー一覧 -->
+<ul class="category-list" id="category-list">
+    {% for id, name in categories.items() %}
+        <li class="category-item" data-category-id="{{ id }}">
+            <!-- 削除ボタン -->
+            <button class="delete-category-btn material-symbols-outlined hidden" data-category-id="{{ id }}">delete</button>
 
-                <!-- カテゴリ選択ボタン -->
-                <button class="category-button {% if selected_category_id == id %}active{% endif %}">
-                {{ name }}
-                </button>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+            <!-- カテゴリ選択ボタン -->
+            <button class="category-button {% if selected_category_id == id %}active{% endif %}">
+            {{ name }}
+            </button>
+        </li>
+    {% endfor %}
+</ul>

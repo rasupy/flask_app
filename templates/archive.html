@@ -1,21 +1,17 @@
 <!-- Archiveを表示するテンプレート -->
 {# archive.html #}
-{% extends "admin.html" %}
-
-{% block content %}
-    <div class="title-bar">
-        <h2 class="title">Archive</h2>
-    </div>
-    <ul id="archive-tasks" class="task-list" data-status="archive">
-        {% for post in posts if post.status == 'archive' %}
-            <li class="task-item"
-                data-id="{{ post.id }}"
-                data-title="{{ post.title }}"
-                data-content="{{ post.content }}"
-                data-category="{{ post.category_id }}"
-                data-status="{{ post.status }}">
-                {{ post.title }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+<div class="title-bar">
+    <h2 class="title">Archive</h2>
+</div>
+<ul id="archive-tasks" class="task-list" data-status="archive">
+    {% for post in posts if post.status == 'archive' %}
+        <li class="task-item"
+            data-id="{{ post.id }}"
+            data-title="{{ post.title }}"
+            data-content="{{ post.content }}"
+            data-category="{{ post.category_id }}"
+            data-status="{{ post.status }}">
+            {{ post.title }}
+        </li>
+    {% endfor %}
+</ul>
