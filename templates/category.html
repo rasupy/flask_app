@@ -6,8 +6,8 @@
     <div class="title-bar">
         <h2 class="title">Category</h2>
         <div class="button-group">
-            <button id="create-category-btn">＋</button>
-            <button id="delete-toggle">削除</button>
+            <button id="create-category-btn" class="material-symbols-outlined">add</button>
+            <button id="delete-toggle" class="material-symbols-outlined">delete</button>
         </div>
     </div>
     <!-- カテゴリー追加フォームを読み込み -->
@@ -17,7 +17,7 @@
         {% for id, name in categories.items() %}
             <li class="category-item" data-category-id="{{ id }}">
                 <!-- 削除ボタン -->
-                <button class="delete-category-btn hidden" data-category-id="{{ id }}">🗑</button>
+                <button class="delete-category-btn material-symbols-outlined hidden" data-category-id="{{ id }}">delete</button>
 
                 <!-- カテゴリ選択ボタン -->
                 <button class="category-button {% if selected_category_id == id %}active{% endif %}">
