@@ -259,7 +259,7 @@ html, body {
 .add-content-task {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
   padding: 0.5rem;
   font-size: 1rem;
   border: 0.4px solid rgba(0, 0, 0, 0.3);
@@ -269,6 +269,15 @@ html, body {
   overflow: hidden;
   line-height: 1.5;
   box-sizing: border-box;
+}
+
+.task-modal-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: #333;
 }
 
 .modal-btns {

@@ -64,7 +64,7 @@
 .add-content-task {
     width: 100%;
     max-width: 100%;
-    margin-bottom: .5rem;
+    margin-bottom: .2rem;
     padding: 0.5rem;
     font-size: var.$fs-main;
     border: var.$border-short;
@@ -74,6 +74,15 @@
     overflow: hidden;
     line-height: 1.5;
     box-sizing: border-box;
+}
+
+.task-modal-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: .5rem;
+    font-size: var.$fs-main;
+    color: var.$tc;
 }
 
 .modal-btns {
