@@ -93,23 +93,23 @@ html, body {
 }
 
 .category-button {
-  font-size: 1.2rem;
-  padding: .2rem;
-  border: none;
-  border-radius: 12px;
-  background: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: inherit;
+    font-size: 1.2rem;
+    padding: .2rem;
+    border: none;
+    border-radius: 12px;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: inherit;
 
-  &:hover {
-    box-shadow: var.$box-shadow-hover;
-  }
+    &:hover {
+        box-shadow: var.$box-shadow-hover;
+    }
 
-  &.active {
-    font-weight: bold !important;
-    text-shadow: var.$box-shadow;
-  }
+    &.active {
+        font-weight: bold !important;
+        text-shadow: var.$box-shadow;
+    }
 }
 
 /* タスクリスト
