@@ -2,8 +2,7 @@
 <div id="category-modal" class="modal hidden">
     <form action="{{ url_for('add_category') }}" method="post" class="modal-form">
         <h2 class="modal-title">New Category</h2>
-        <label class="category-label" for="category_name">Category Name:</label>
-        <input type="text" id="category_name" class="textbox-category" name="category_name" required>
+        <input type="text" id="category_name" class="textbox-category" placeholder="Category Title" name="category_name" required>
 
         <div class="modal-btns">
             <button type="submit" class="modal-btn">Add</button>

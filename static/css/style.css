@@ -216,7 +216,7 @@ html, body {
 
 .modal-title {
   font-size: 1.5rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 1rem;
   color: #333;
   cursor: pointer;
 }
@@ -236,15 +236,8 @@ html, body {
   background-color: #f0f0f0;
 }
 
-/* カテゴリーモーダル
+/* モーダル(カテゴリー、タスク)
 ---------------------------------- */
-.category-label {
-  display: block;
-  margin-bottom: 0.1rem;
-  font-size: 1rem;
-  color: #333;
-}
-
 .textbox-category {
   width: 100%;
   padding: 0.4rem;
@@ -252,6 +245,30 @@ html, body {
   font-size: 1rem;
   border: 0.4px solid rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+}
+
+.add-task-title {
+  width: 100%;
+  padding: 0.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  border: 0.4px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.add-content-task {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 0.4px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  min-height: 1em;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
 
 .modal-btns {
