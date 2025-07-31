@@ -1,5 +1,5 @@
 // タスクモーダルのテキストエリア文字数をカウント
-const textarea = document.getElementById("add-content-task");
+const textarea = document.getElementById("add-task-content");
 const charCount = document.getElementById("char-count");
 
 textarea.addEventListener("input", () => {
