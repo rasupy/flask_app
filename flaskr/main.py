@@ -160,12 +160,15 @@ def add_task():
             content=content,
             category_id=category_id,
             user_id=user.id,
-            completed=False,
         )
         session.add(new_post)
         session.commit()
 
-    return redirect(url_for("admin"))
+    return redirect(
+        url_for(
+            "admin",
+        )
+    )
 
 
 # タスクの編集処理
