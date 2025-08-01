@@ -127,7 +127,6 @@ def update_task_order():
 
     with SessionLocal() as session:
         for post_data in data["posts"]:
-            # print("個別のでデータ:", post_data)  # デバッグ用
             post_id = uuid.UUID(post_data["id"])
             post = session.get(Post, post_id)
 
@@ -140,32 +139,50 @@ def update_task_order():
 
 
 # タスクの追加処理
-@app.route("/admin/add_task", methods=["POST"])
+# ------------------------------------------------------------
+@app.route("/add_task", methods=["POST"])
 def add_task():
-    title = request.form["title"]
-    content = request.form["content"]
-    category_id = request.form["category_id"]
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+
+    data = request.get_json()
+    print("受け取ったデータ:", data)  # デバッグ用
+
+    title = data.get("title")
+    content = data.get("content")
+    category_id = data.get("category_id")
+
+    # 仮のユーザーID、実際はログインユーザーのIDを使用する
+    user_id = "6b3ad4bf-5b9a-4946-be4f-77aa04d40d8e"
+
+    if not title or not category_id or not user_id:
+        return (
+            jsonify({"error": "タイトル、カテゴリID、ユーザーIDは必須です"}),
+            400,
+        )
 
     with SessionLocal() as session:
-
-        # 仮のユーザーを取得（ログイン機能があればセッションから）
-        user = session.query(User).first()
-        if not user:
-            # ユーザーが存在しない場合はエラーを返すか、適切な処理を行う
-            return "No user found. Please register a user first.", 400
-
         new_post = Post(
-            id=str(uuid.uuid4()),
             title=title,
             content=content,
             category_id=category_id,
-            user_id=user.id,
-            completed=False,
+            user_id=user_id,  # ログインユーザーのIDを使用
         )
         session.add(new_post)
         session.commit()
 
-    return redirect(url_for("admin"))
+        return (
+            jsonify(
+                {
+                    "id": str(new_post.id),
+                    "title": new_post.title,
+                    "content": new_post.content,
+                    "category_id": str(new_post.category_id),
+                    # "status": new_post.status,
+                }
+            ),
+            200,
+        )
 
 
 # タスクの編集処理

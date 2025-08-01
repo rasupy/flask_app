@@ -1,20 +1,27 @@
-<!-- タスク編集フォーム -->
-<!-- templates/edit_task.html -->
+<!-- タスク編集モーダル ---------------------------------------->
 <div id="edit-modal" class="modal hidden">
     <form action="" method="POST" class="modal-form" id="edit-form">
-        <select name="category_id" required>
+        <h2 class="modal-title">Edit Task</h2>
+        
+        <select class="edit-task-category" name="category_id" required>
             {% for id, name in categories.items() %}
                 <option value="{{ id }}">{{ name }}</option>
             {% endfor %}
         </select>
 
-        <input type="text" name="title" placeholder="タイトル" required>
-        <textarea name="content" placeholder="内容"></textarea>
+        <input type="text" class="edit-task-title" name="title" placeholder="Title" required>
 
-        <div class="modal-buttons">
-            <button type="submit">更新</button>
-            <button type="button" id="delete-task-btn">削除</button>
-            <button type="button" id="cancel-edit">キャンセル</button>
+        <textarea class="edit-task-content" name="content" placeholder="Content"></textarea>
+
+        <div class="char-count">
+            <div id="char-count">0 / 140</div>
+        </div>
+        <div class="task-modal-bottom-sub">
+            <div class="modal-btns">
+                <button type="submit" class="modal-btn">Edit</button>
+                <button type="button" id="delete-task-btn" class="modal-btn">Delete</button>
+                <button type="button" id="cancel-edit" class="modal-btn">Cancel</button>
+            </div>
         </div>
     </form>
 </div>
