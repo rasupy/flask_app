@@ -63,12 +63,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const task = await response.json();
 
-            // タスクを画面に追加（例：li 要素）
-            const li = document.createElement("li");
-            li.classList.add("task-item");
-            li.dataset.id = task.id;
-            li.textContent = task.title;
-            taskList.appendChild(li);
+            // 追加したタスクを allPosts に追記
+            if (!window.allPosts) {
+                window.allPosts = {};
+            }
+            if (!window.allPosts[task.category_id]) {
+                window.allPosts[task.category_id] = [];
+            }
+            window.allPosts[task.category_id].push(task);
+
+            // 追加したタスクを画面に追加
+            if (task.category_id === selectedCategoryId) {
+                const li = document.createElement("li");
+                li.classList.add("task-item");
+                li.dataset.id = task.id;
+                li.dataset.title = task.title;
+                li.dataset.content = task.content || "";
+                li.dataset.category = task.category_id;
+                li.textContent = task.title;
+                taskList.appendChild(li);
+            }
 
             // モーダル閉じてフォーム初期化
             form.reset();

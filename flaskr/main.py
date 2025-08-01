@@ -178,7 +178,7 @@ def add_task():
                     "title": new_post.title,
                     "content": new_post.content,
                     "category_id": str(new_post.category_id),
-                    "status": new_post.status,
+                    # "status": new_post.status,
                 }
             ),
             200,
