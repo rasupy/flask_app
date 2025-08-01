@@ -22,14 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            tasks.forEach(task => {
+            tasks.forEach((task, index) => {
                 const li = document.createElement("li");
-                li.className = "task-item";
+                li.className = "task-item animate";
                 li.dataset.id = task.id;
                 li.dataset.title = task.title;
                 li.dataset.content = task.content;
                 li.dataset.category = task.category_id;
                 li.textContent = task.title;
+                
+                // アニメーション開始のタイミングをずらして、連続した動きにする
+                li.style.animationDelay = `${index * 0.1}s`;
+                
                 taskList.appendChild(li);
             });
         });

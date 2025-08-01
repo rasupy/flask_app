@@ -63,6 +63,27 @@
   animation-delay: 1s;
 }
 
+/* タスクアイテムのアニメーション
+=================================================== */
+@keyframes fadeSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* アニメーションを使うクラス */
+.task-item.animate {
+  animation-name: fadeSlideDown;
+  animation-duration: 0.25s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  opacity: 0;
+}
+
 html, body {
   font-family: "Noto Sans JP", "Roboto", sans-serif;
   font-size: 16px;
