@@ -63,7 +63,25 @@
   animation-delay: 1s;
 }
 
-/* アイテムのアニメーション
+/* カテゴリーアイテムのアニメーション
+=================================================== */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.category-item.animate {
+  animation-name: fadeIn;
+  animation-duration: 1.2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  opacity: 0;
+}
+
+/* タスクアイテムのアニメーション
 =================================================== */
 @keyframes fadeSlideDown {
   0% {
@@ -75,12 +93,9 @@
     transform: translateY(0);
   }
 }
-/* カテゴリーアイテムのアニメーション */
-/* タスクアイテムのアニメーション */
-.category-item.animate,
 .task-item.animate {
   animation-name: fadeSlideDown;
-  animation-duration: 0.25s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
   opacity: 0;
