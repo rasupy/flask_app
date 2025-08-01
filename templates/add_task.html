@@ -1,6 +1,6 @@
 <!-- タスク追加用モーダル ---------------------------------------->
 <div id="task-modal" class="modal hidden">
-    <form action="{{ url_for('add_task') }}" method="POST" class="modal-form">
+    <form id="task-form" class="modal-form">
         <input type="hidden" name="category_id" id="task-category-id">
 
         <h2 class="modal-title">Add Task</h2>

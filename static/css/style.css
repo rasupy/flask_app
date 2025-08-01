@@ -12,7 +12,7 @@
   }
 }
 #main-title {
-  opacity: 0; /* 初期は透明 */
+  opacity: 0;
   animation: fadeSlideIn 0.8s ease-out forwards;
 }
 
