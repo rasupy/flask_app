@@ -63,7 +63,7 @@
   animation-delay: 1s;
 }
 
-/* タスクアイテムのアニメーション
+/* アイテムのアニメーション
 =================================================== */
 @keyframes fadeSlideDown {
   0% {
@@ -75,7 +75,9 @@
     transform: translateY(0);
   }
 }
-/* アニメーションを使うクラス */
+/* カテゴリーアイテムのアニメーション */
+/* タスクアイテムのアニメーション */
+.category-item.animate,
 .task-item.animate {
   animation-name: fadeSlideDown;
   animation-duration: 0.25s;

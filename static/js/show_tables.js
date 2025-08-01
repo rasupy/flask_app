@@ -4,8 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.allPosts = JSON.parse(raw);  // グローバルに展開
 
     const taskList = document.querySelector(".task-list");
+    const categoryItems = document.querySelectorAll(".category-item");
     const buttons = document.querySelectorAll('.category-button');
 
+    // カテゴリーアイテムのアニメーションを適用
+    categoryItems.forEach((item, index) => {
+        item.classList.add("animate");
+        item.style.animationDelay = `${index * 0.1}s`;
+    });
+
+    // カテゴリーボタンのクリックイベント
     buttons.forEach(button => {
         button.addEventListener('click', (event) => {
             event.stopPropagation();
