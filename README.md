@@ -1,27 +1,87 @@
 ## FLASK_APP
 ミニアプリを開発 - ToDo
 
-### 開発言語/フレームワークなど
-- Python3
-- HTML-CSS / SASS
-- JavaScript → TypeScript 移行予定
-- Flask
-- SQLAlchemy
-- PostgreSQL
-- VScode-WSL2
-- Venv → Docker 移行予定
+### アプリ名 :
 
-#### 完成のイメージ
-1. カテゴリーを作成する。</br>
-例：料理
-2. タスクを追加する。</br>
-例：明日の夕飯はサバの塩焼き
-3. タスクに対してメモ機能もある。</br>
-4. カテゴリー別にタスクが表示される。</br>
-5. プログレステーブル or アーカイブテーブルにタスクを移動する</br>
-6. 機能：作成（追加）、編集、移動、並べ替え、削除
+`Todo_App`
 
-#### 開発中のアイデア
+---
+
+### 開発の背景、目的
+
+* 勉学のスケージュールなどをタスクで管理してモチベを上げる 
+* なにをやるか、やったかを視覚的に把握できると便利
+* シンプルで手軽なツールを目指す
+
+---
+
+### 想定ユーザー
+
+* 活動家、学生、主婦、会社員、経営者、ゲーマーなど
+
+---
+
+### 利用シーン
+
+* 学習内容を記録したい
+* 食事の献立を管理したい
+* 業務の段取りを確認したい
+
+---
+
+### 機能要件
+
+| 機能 |
+| -------------------- | 
+| ユーザー登録・ログイン | 
+| カテゴリーの追加、編集、並べ替え、削除　|　
+| タスクの追加、編集、並べ替え、移動、削除　| 
+
+---
+
+### 使用技術
+
+| 項目     | 内容                                  |
+| ------ | -------------------------------------- |
+| フロント   | HTML-CSS, SASS, JavaScript, TypeScript（予定） |
+| バックエンド | Flask (Python)                         |
+| DB     | PostgreSQL + SQLAlchemy                |
+| 環境     | Venv → Docker 移行予定                     |
+| IDE    | VSCode-WSL2 / Copilot + ChatGPT                   |
+
+---
+
+### データベース設計(todo_db)
+
+| テーブル名  | カラム名      | 型       | 説明      |
+| ---------- | ------------ | -------- | ------- |
+| users      | id           | uuid     | ユーザーID  |
+|            | name         | text      | ユーザー名  |
+|            | email        | text      | メール      |
+|            | password     | text     | パスワード |
+|            | created_at   | timezone | 登録日 |
+| posts      | id           | uuid     | タスクID  |
+|            | title        | text     | タスク名  |
+|            | content      | text     | 内容      |
+|            | user_id      | uuid     | ユーザーID   |
+|            | category_id  | uuid     | カテゴリーID |
+|            | status       | text     | ステータス   |
+|            | sort_order   | int      | 並び順      |
+| categories | id           | uuid     | カテゴリID  |
+|            | name         | text      | カテゴリ名   |
+|            | sort_order   | int      | 並び順 |
+
+---
+
+### 画面設計
+
+* `/login` : ログイン画面
+* `/admin` : 開発者用
+* `/<user_name>`: ユーザー用
+
+---
+
+### 開発中のアイデア
 - Docker、TypeScriptに移行予定
 
 ```t
