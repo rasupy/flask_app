@@ -146,14 +146,15 @@ def add_task():
         return jsonify({"error": "Request must be JSON"}), 400
 
     data = request.get_json()
-    print("受け取ったデータ:", data)  # デバッグ用
 
     title = data.get("title")
     content = data.get("content")
     category_id = data.get("category_id")
 
     # 仮のユーザーID、実際はログインユーザーのIDを使用する
+    # ----------------------------------------------------------
     user_id = "6b3ad4bf-5b9a-4946-be4f-77aa04d40d8e"
+    # ----------------------------------------------------------
 
     if not title or not category_id or not user_id:
         return (
