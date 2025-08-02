@@ -72,16 +72,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             window.allPosts[task.category_id].push(task);
 
-            // 追加したタスクを画面に追加
+            // 選択中のカテゴリのタスクリストを更新
             if (task.category_id === selectedCategoryId) {
-                const li = document.createElement("li");
-                li.classList.add("task-item");
-                li.dataset.id = task.id;
-                li.dataset.title = task.title;
-                li.dataset.content = task.content || "";
-                li.dataset.category = task.category_id;
-                li.textContent = task.title;
-                taskList.appendChild(li);
+                const taskList = document.getElementById("todo-tasks");
+                
+                // 「タスクがありません」メッセージをクリア
+                taskList.innerHTML = "";
+                
+                // 現在のカテゴリの全タスクを再描画
+                const tasks = window.allPosts[selectedCategoryId];
+                tasks.forEach((currentTask, index) => {
+                    const li = document.createElement("li");
+                    li.classList.add("task-item", "animate");
+                    li.dataset.id = currentTask.id;
+                    li.dataset.title = currentTask.title;
+                    li.dataset.content = currentTask.content || "";
+                    li.dataset.category = currentTask.category_id;
+                    li.textContent = currentTask.title;
+                    li.style.animationDelay = `${index * 0.1}s`;
+                    taskList.appendChild(li);
+                });
             }
 
             // モーダル閉じてフォーム初期化
