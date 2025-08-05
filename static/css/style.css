@@ -166,14 +166,14 @@ html, body {
   background: #f0f0f0;
 }
 
-/* カテゴリーリスト
-=================================================== */
 .button-group {
   display: flex;
   justify-content: flex-end;
   gap: 0.1rem;
 }
 
+/* カテゴリーリスト
+=================================================== */
 .delete-category-btn.hidden,
 .category-item .material-symbols-outlined.hidden {
   display: none;
@@ -217,12 +217,27 @@ html, body {
 }
 
 .task-item {
+  display: flex;
+  align-items: center;
   font-size: 1rem;
   border: 1px solid #000;
   border-radius: 0.25rem;
   padding: 0.5rem;
   cursor: pointer;
   transition: 0.5s;
+  position: relative;
+}
+
+.task-item .delete-task-btn {
+  margin-right: 0.5rem;
+  flex-shrink: 0; /* ボタンサイズ固定 */
+}
+
+.task-item .task-title {
+  flex: 1;
+  white-space: nowrap; /* 改行防止 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 長いタイトルは省略 */
 }
 
 .task-item:hover {
@@ -231,6 +246,12 @@ html, body {
 
 .task-btn {
   font-size: 0.75rem;
+}
+
+.delete-task-btn.hidden,
+.task-item .material-symbols-outlined.hidden {
+  display: none;
+  pointer-events: none;
 }
 
 .modal {

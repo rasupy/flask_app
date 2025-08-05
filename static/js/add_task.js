@@ -88,10 +88,30 @@ document.addEventListener("DOMContentLoaded", function () {
                     li.dataset.title = currentTask.title;
                     li.dataset.content = currentTask.content || "";
                     li.dataset.category = currentTask.category_id;
-                    li.textContent = currentTask.title;
+                    
+                    // 削除ボタンを作成（左側に配置）
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.className = "delete-task-btn material-symbols-outlined hidden";
+                    deleteBtn.dataset.taskId = currentTask.id;
+                    deleteBtn.textContent = "delete";
+                    
+                    // タスクタイトルを作成
+                    const titleSpan = document.createElement("span");
+                    titleSpan.className = "task-title";
+                    titleSpan.textContent = currentTask.title;
+                    
+                    // 削除ボタンを先に追加、次にタイトル
+                    li.appendChild(deleteBtn);
+                    li.appendChild(titleSpan);
+                    
                     li.style.animationDelay = `${index * 0.1}s`;
                     taskList.appendChild(li);
                 });
+
+                // 削除ボタンの表示状態を更新
+                if (window.updateDeleteButtonsVisibility) {
+                    window.updateDeleteButtonsVisibility();
+                }
             }
 
             // モーダル閉じてフォーム初期化

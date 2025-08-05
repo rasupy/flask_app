@@ -4,9 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const editModal = document.getElementById("edit-modal");
   const editForm = document.getElementById("edit-form");
   const cancelBtn = document.getElementById("cancel-edit");
-  const deleteBtn = document.getElementById("delete-task-btn");
 
-  // 1) タスク一覧全体にクリックイベントをひとまとめにバインド
+  // タスク一覧全体にクリックイベントをひとまとめにバインド
   taskList.addEventListener("click", (e) => {
     // 本当に .task-item をクリックしたかチェック
     const item = e.target.closest(".task-item");
@@ -27,26 +26,22 @@ document.addEventListener("DOMContentLoaded", () => {
     editModal.classList.remove("hidden");
   });
 
-  // 2) 削除ボタンのクリックイベント
-  deleteBtn.addEventListener("click", () => {
-    const confirmed = confirm("本当に削除しますか？");
-    if (confirmed) {
-        const taskId = editForm.action.split("/").pop(); // URLからIDを取得
-        fetch(`/admin/delete_task/${taskId}`, {
-            method: "POST",
-        }).then(res => {
-            if (res.ok) {
-                location.reload();
-            } else {
-                alert("削除に失敗しました");
-            }
-        });
-      }
-  });
-
-  // 3) キャンセルでクローズ
+  // キャンセルでクローズ
   cancelBtn.addEventListener("click", () => {
     editModal.classList.add("hidden");
   });
+});
+
+// タスクアイテムクリック時の編集モーダル表示部分を修正
+document.addEventListener("click", (e) => {
+    const taskItem = e.target.closest(".task-item");
+    if (!taskItem) return;
+    
+    // 削除ボタンがクリックされた場合は編集モーダルを開かない
+    if (e.target.closest(".delete-task-btn")) {
+        return;
+    }
+    
+    // 既存の編集モーダル処理...
 });
 

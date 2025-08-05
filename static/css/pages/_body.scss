@@ -70,14 +70,14 @@ html, body {
     background: var.$hover-bg;
 }
 
-/* カテゴリーリスト
-=================================================== */
 .button-group {
     display: flex;
     justify-content: flex-end;
     gap: .1rem;
 }
 
+/* カテゴリーリスト
+=================================================== */
 .delete-category-btn.hidden,
 .category-item .material-symbols-outlined.hidden {
     display: none;
@@ -137,4 +137,10 @@ html, body {
 
 .task-btn {
     font-size: var.$fs-sub;
+}
+
+.delete-task-btn.hidden,
+.task-item .material-symbols-outlined.hidden {
+    display: none;
+    pointer-events: none;
 }
