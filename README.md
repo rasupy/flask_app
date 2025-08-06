@@ -88,3 +88,29 @@
 # tips
 最小のアプリでも機能が増えると管理が大変になる。
 ```
+
+## セットアップ手順
+
+### 1. 環境変数の設定
+```bash
+# .envファイルを作成
+cp .env.example .env
+
+# .envファイルを編集して実際の値を設定
+nano .env
+```
+
+### 2. 開発環境での起動
+```bash
+# venv環境での起動
+source venv/bin/activate
+python flaskr/main.py
+
+# Docker環境での起動
+docker-compose up --build
+```
+
+### 3. 本番環境での注意点
+- SECRET_KEYは必ず変更してください
+- データベースのパスワードは強力なものを使用してください
+- 環境変数は安全に管理してください

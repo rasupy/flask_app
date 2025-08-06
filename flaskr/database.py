@@ -1,12 +1,21 @@
 # ==========================================================
 # データベースの作成用
 # ==========================================================
-from sqlalchemy import create_engine, inspect, select, or_, update, delete
+from sqlalchemy import (
+    create_engine,
+    inspect,
+    select,
+    or_,
+    update,
+    delete,
+    text,
+)
 from sqlalchemy.orm import Session, selectinload, sessionmaker
 from .models import Base, User, Post, Category
 from datetime import date
 from dotenv import load_dotenv  # type: ignore
 import os
+import uuid
 
 
 def main():
@@ -139,6 +148,62 @@ def main():
         session.execute(stmt)
         session.commit()
     """
+
+
+# Docker環境用のデータベース初期化
+# ------------------------------------------
+def init_database():
+    """Docker環境用のデータベース初期化"""
+    from .config import get_config
+    from sqlalchemy import create_engine, text
+    from sqlalchemy.orm import Session
+    from .models import Base, User
+    import uuid
+
+    config = get_config()
+
+    # DEBUG属性の安全な取得
+    debug_mode = getattr(config, "DEBUG", False)
+    engine = create_engine(config.database_url, echo=debug_mode)
+
+    try:
+        # 残りのコードは変更なし
+        with engine.connect() as conn:
+            result = conn.execute(
+                text(
+                    """
+                    SELECT table_name FROM information_schema.tables 
+                    WHERE table_schema = 'public' AND table_name = 'users'
+                """
+                )
+            )
+
+            if not result.fetchone():
+                print("テーブルが存在しないため、作成します...")
+                Base.metadata.create_all(engine)
+
+                # デフォルトユーザーを作成
+                with Session(engine) as session:
+                    existing_user = session.query(User).first()
+                    if not existing_user:
+                        default_user = User(
+                            id=uuid.uuid4(),
+                            name=config.DEFAULT_USER_NAME,
+                            email=config.DEFAULT_USER_EMAIL,
+                            password=config.DEFAULT_USER_PASSWORD,  # 本番では要ハッシュ化
+                        )
+                        session.add(default_user)
+                        session.commit()
+                        print(
+                            f"デフォルトユーザーを作成しました: {default_user.name}"
+                        )
+            else:
+                print("既存のテーブルを使用します")
+
+    except Exception as e:
+        print(f"データベース初期化エラー: {e}")
+        # 初期化に失敗した場合でもテーブルを作成
+        Base.metadata.create_all(engine)
 
 
 if __name__ == "__main__":

@@ -3,19 +3,13 @@
 # ==========================================================
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-import os
+from .config import get_config
 
-load_dotenv()
+# 設定を取得
+config = get_config()
 
-user = os.getenv("DB_USER")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-dbname = os.getenv("DB_NAME")
-
-db_url = f"postgresql+psycopg2://{user}:{password}@{host}/{dbname}"
-
-engine = create_engine(db_url, echo=True)
+# データベース接続エンジンを作成
+engine = create_engine(config.database_url, echo=config.DEBUG)
 
 SessionLocal = sessionmaker(
     autocommit=False,

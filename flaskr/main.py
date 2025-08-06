@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flaskr.db import SessionLocal
 from flaskr.models import Post, Category, User
+from flaskr.config import get_config
 from sqlalchemy.orm import selectinload
 import uuid
 import os
+
+# 設定を取得
+config = get_config()
 
 template_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+app.config["SECRET_KEY"] = config.SECRET_KEY
 
 
 @app.route("/admin")
@@ -146,28 +151,30 @@ def add_task():
         return jsonify({"error": "Request must be JSON"}), 400
 
     data = request.get_json()
-
     title = data.get("title")
     content = data.get("content")
     category_id = data.get("category_id")
 
-    # 仮のユーザーID、実際はログインユーザーのIDを使用する
-    # ----------------------------------------------------------
-    user_id = "6b3ad4bf-5b9a-4946-be4f-77aa04d40d8e"
-    # ----------------------------------------------------------
-
-    if not title or not category_id or not user_id:
-        return (
-            jsonify({"error": "タイトル、カテゴリID、ユーザーIDは必須です"}),
-            400,
-        )
+    if not title or not category_id:
+        return jsonify({"error": "タイトルとカテゴリIDは必須です"}), 400
 
     with SessionLocal() as session:
+        # 既存のユーザーを取得、なければデフォルトユーザーを作成
+        user = session.query(User).first()
+        if not user:
+            user = User(
+                name=config.DEFAULT_USER_NAME,
+                email=config.DEFAULT_USER_EMAIL,
+                password=config.DEFAULT_USER_PASSWORD,
+            )
+            session.add(user)
+            session.commit()
+
         new_post = Post(
             title=title,
             content=content,
             category_id=category_id,
-            user_id=user_id,  # ログインユーザーのIDを使用
+            user_id=user.id,
         )
         session.add(new_post)
         session.commit()
@@ -179,7 +186,6 @@ def add_task():
                     "title": new_post.title,
                     "content": new_post.content,
                     "category_id": str(new_post.category_id),
-                    # "status": new_post.status,
                 }
             ),
             200,

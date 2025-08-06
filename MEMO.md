@@ -213,3 +213,24 @@ with SessionLocal() as session:
 あとは、Flaskでページと機能をmain.pyで作っていく。</br>
 main.py で動作する為に __init__.py と db.py を作成する。</br>
 db.py は、データベースにアクセスする為の機能</br>
+
+#### Docker
+```bash
+# bash
+# 既存のコンテナを停止・削除
+docker-compose down -v
+
+# 新しい構成でビルド・起動
+docker-compose up --build
+```
+# 1. 現在のDockerデータベースの状態を確認
+docker-compose exec db psql -U postgres -d todo_db -c "\dt"
+
+# 2. テーブルの内容を確認
+docker-compose exec db psql -U postgres -d todo_db -c "SELECT * FROM users;"
+docker-compose exec db psql -U postgres -d todo_db -c "SELECT * FROM categories;"
+docker-compose exec db psql -U postgres -d todo_db -c "SELECT * FROM posts;"
+
+# 3. データが空の場合、バックアップから復元
+docker-compose exec -T db psql -U postgres -d todo_db < backup.sql
+```
