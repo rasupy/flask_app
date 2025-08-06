@@ -1,4 +1,29 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+
+# 環境設定
 .env
-venv/
+.env.local
+.env.production
+.env.staging
+
+# データベース
+backup.sql
+*.sql
+*.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# ログ
+*.log
+logs/
+
+# その他
+.DS_Store
+Thumbs.db

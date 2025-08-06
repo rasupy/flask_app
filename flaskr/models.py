@@ -4,23 +4,23 @@ from sqlalchemy import (
     Uuid,
     ForeignKey,
     DateTime,
-    Column,
     Integer,
     String,
 )
-import uuid
 from datetime import datetime
 from zoneinfo import ZoneInfo
+import uuid
 
 
-# Base クラスに DeclarativeBase を継承してクラスとテーブルを自動で結び付ける
 class Base(DeclarativeBase):
+    """SQLAlchemy ORM のベースクラス"""
+
     pass
 
 
-# users テーブルの定義（ログイン機能）
-# ユーザーID、ユーザー名、メールアドレス、パスワード, 登録日
 class User(Base):
+    """ユーザー情報を管理するテーブル"""
+
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(
@@ -28,31 +28,28 @@ class User(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
-    name: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
-        unique=False,
-    )
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
-        unique=True,
+        String(255), unique=True, nullable=False
     )
-    password: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
-    )
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(ZoneInfo("Asia/Tokyo")),
-        nullable=False,
     )
-    post: Mapped[list["Post"]] = relationship(back_populates="user")
+
+    # 関連テーブルとのリレーション
+    categories = relationship(
+        "Category", back_populates="user", cascade="all, delete-orphan"
+    )
+    posts = relationship(
+        "Post", back_populates="user", cascade="all, delete-orphan"
+    )
 
 
-# categories テーブルの定義（カテゴリ管理機能）
-# カテゴリID、カテゴリ名、並び順
 class Category(Base):
+    """カテゴリー情報を管理するテーブル"""
+
     __tablename__ = "categories"
 
     id: Mapped[uuid.UUID] = mapped_column(
@@ -60,23 +57,28 @@ class Category(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
-    name: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
-        unique=True,
-    )
-    sort_order: Mapped[int] = mapped_column(
-        Integer,
-        default=0,
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
+        ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
     )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(ZoneInfo("Asia/Tokyo")),
+    )
 
-    post: Mapped[list["Post"]] = relationship(back_populates="category")
+    # 関連テーブルとのリレーション
+    user = relationship("User", back_populates="categories")
+    posts = relationship(
+        "Post", back_populates="category", cascade="all, delete-orphan"
+    )
 
 
-# posts テーブルの定義(記事投稿機能)
-# 記事ID、記事タイトル、記事内容、状態、並び、ユーザーID、カテゴリID
 class Post(Base):
+    """タスク（投稿）情報を管理するテーブル"""
+
     __tablename__ = "posts"
 
     id: Mapped[uuid.UUID] = mapped_column(
@@ -84,30 +86,30 @@ class Post(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
-    title: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
-    )
-    content: Mapped[str] = mapped_column(
-        Text,
-        nullable=True,
-    )
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default="todo")
+    sort_order: Mapped[int] = mapped_column(Integer, default=0)
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id"),
+        Uuid,
+        ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
     )
     category_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("categories.id"),
+        Uuid,
+        ForeignKey("categories.id", ondelete="CASCADE"),
         nullable=False,
     )
-    status: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
-        default="todo",
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(ZoneInfo("Asia/Tokyo")),
     )
-    sort_order: Mapped[int] = mapped_column(
-        Integer,
-        default=0,
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(ZoneInfo("Asia/Tokyo")),
+        onupdate=lambda: datetime.now(ZoneInfo("Asia/Tokyo")),
     )
-    user: Mapped["User"] = relationship(back_populates="post")
-    category: Mapped["Category"] = relationship(back_populates="post")
+
+    # 関連テーブルとのリレーション
+    user = relationship("User", back_populates="posts")
+    category = relationship("Category", back_populates="posts")

@@ -1,3 +1,5 @@
+# テストユーザー作成用
+# Venv -> Docker 移行後、使用しない
 from flaskr.db import SessionLocal
 from flaskr.models import User
 import uuid
