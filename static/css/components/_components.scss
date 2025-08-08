@@ -56,7 +56,7 @@
 
     &:focus {
         outline: none;
-        border-color: var.$gray-600;
+        border-color: var.$color-focus;
     }
 
     &::placeholder {
@@ -93,6 +93,13 @@
     display: flex;
     align-items: center;
     position: relative;
+    transition: padding var.$transition;
+    
+    // 削除モード時のパディング調整
+    &.delete-mode,
+    &:has(.delete-category-btn.visible) {
+        padding-left: 2rem;
+    }
 }
 
 .category-button {
@@ -117,31 +124,110 @@
     }
 }
 
+// タスクアイテム（元のデザインに戻す）
 .task-item {
     display: flex;
-    align-items: flex-start;
-    gap: var.$spacing-sm;
-    padding: var.$spacing-base;
+    align-items: center;
+    padding: var.$spacing-sm;
     background: var.$color-surface;
     border: var.$border;
     border-radius: var.$border-radius;
-    cursor: grab;
+    cursor: pointer;
     transition: all var.$transition;
+    position: relative;
+    min-height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    
+    // クリック範囲を確実にする
+    pointer-events: auto;
+    z-index: 1; // 他の要素より前面に
 
     &:hover {
         box-shadow: var.$shadow-hover;
-        transform: translateY(-1px);
+        background: var.$color-hover;
     }
 
     &:active {
+        transform: scale(0.98);
+    }
+
+    // ドラッグ中は編集を無効化
+    &.sortable-chosen,
+    &.sortable-ghost {
         cursor: grabbing;
+        pointer-events: none;
+    }
+
+    // 削除モード時のパディング調整
+    &.delete-mode,
+    &:has(.delete-task-btn.visible) {
+        padding-left: 2.5rem;
     }
 }
 
+// タスクタイトル（クリックイベントを親に委譲）
 .task-title {
     flex: 1;
+    font-size: var.$font-size-base;
     font-weight: var.$font-weight-normal;
+    color: var.$color-text;
+    margin: 0;
+    padding: var.$spacing-xs; // 小さなパディングでクリック範囲を拡大
     word-wrap: break-word;
+    line-height: 1.4;
+    text-align: left;
+    pointer-events: none; // クリックイベントを親に委譲
+    user-select: none; // テキスト選択を無効化
+}
+
+// タスクリスト（クリック範囲の問題を修正）
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: var.$spacing-sm;
+    list-style: none;
+    padding: var.$spacing-sm; // パディングを追加してクリック範囲を確保
+    margin: 0;
+    min-height: 100px;
+    border: 2px dashed transparent;
+    border-radius: var.$border-radius;
+    transition: all var.$transition;
+    align-items: stretch; // 子要素を横幅いっぱいに拡張
+    justify-content: flex-start;
+    
+    &.drag-over {
+        border-color: var.$success-color;
+        background-color: rgba(76, 175, 80, 0.05);
+    }
+}
+
+// ドラッグ中のスタイル
+.task-dragging {
+    .task-item:not(.sortable-chosen) {
+        opacity: 0.6;
+    }
+    
+    .task-list {
+        border: 2px dashed var.$gray-300;
+        border-radius: var.$border-radius;
+        min-height: 100px;
+        padding: var.$spacing-sm;
+        
+        &.drag-over {
+            border-color: var.$success-color;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+    }
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+    background: var.$gray-100 !important;
+}
+
+.sortable-chosen {
+    box-shadow: var.$shadow-hover;
 }
 
 // モーダル
@@ -156,7 +242,7 @@
     border: var.$border;
     border-radius: var.$border-radius;
     box-shadow: var.$shadow-hover;
-    z-index: 1000;
+    z-index: var.$z-modal;
 
     &.hidden {
         display: none;
@@ -176,87 +262,74 @@
     margin-bottom: var.$spacing-sm;
 }
 
-// 削除ボタン
-.delete-btn {
-    position: absolute;
-    top: var.$spacing-xs;
-    right: var.$spacing-xs;
-    width: 1.5rem;
-    height: 1.5rem;
+.modal-btns {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var.$gray-100;
-    color: var.$color-text-muted;
-    border: none;
-    border-radius: var.$spacing-xs;
-    font-size: var.$font-size-sm;
-    cursor: pointer;
-    opacity: 0;
-    transition: all var.$transition;
+    justify-content: flex-end;
+    gap: var.$spacing-sm;
+}
 
-    &:hover {
+.modal-btn {
+    @extend %btn-base;
+    
+    &.primary {
         background: var.$gray-800;
         color: var.$white;
-        opacity: 1 !important;
-    }
-
-    &.visible {
-        opacity: 0.7;
-    }
-
-    &.hidden {
-        display: none;
+        border-color: var.$gray-800;
+        
+        &:hover {
+            background: var.$gray-900;
+            border-color: var.$gray-900;
+        }
     }
 }
 
-.category-item:hover .delete-btn,
-.task-item:hover .delete-btn {
-    opacity: 0.7;
-}
-
-// ドラッグ状態
-.sortable-ghost {
-    opacity: 0.4;
-    background: var.$gray-200 !important;
-}
-
-.sortable-chosen {
-    background: var.$gray-100 !important;
-    box-shadow: var.$shadow-hover !important;
-    transform: scale(1.02);
-}
-
-.sortable-drag {
-    opacity: 0.9;
-    transform: rotate(2deg) scale(1.05);
-    z-index: 500;
-}
-
-// アニメーション
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-2rem);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-// レスポンシブ
-@media (max-width: 768px) {
-    .card {
-        flex: 1 1 100%;
-    }
+// 削除ボタン
+.delete-category-btn,
+.delete-task-btn {
+    width: 1.8rem;
+    height: 1.8rem;
+    position: absolute;
+    left: -0.5rem;
+    top: 50%;
+    background: var.$danger-color;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8rem;
+    z-index: 10;
     
-    .modal {
-        width: calc(100vw - 1rem);
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0);
+    
+    &.visible {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(-50%) scale(1) !important;
+        animation: popupFromLeft 0.3s ease-out;
+    }
+
+    &.visible:hover {
+        background: #ff5252;
+        transform: translateY(-50%) scale(1.1) !important;
+    }
+}
+
+@keyframes popupFromLeft {
+    0% { 
+        opacity: 0;
+        transform: translateY(-50%) translateX(-1rem) scale(0);
+    }
+    70% { 
+        transform: translateY(-50%) translateX(0.2rem) scale(1.1);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(-50%) translateX(0) scale(1);
     }
 }

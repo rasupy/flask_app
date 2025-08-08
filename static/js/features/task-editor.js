@@ -1,144 +1,141 @@
-// モーダル管理クラス
-class ModalManager {
-    constructor(modalId, formId, cancelBtnId) {
-        this.modal = document.getElementById(modalId);
-        this.form = document.getElementById(formId);
-        this.cancelBtn = document.getElementById(cancelBtnId);
-        this._isOpen = false; // 内部状態を追跡
-        
-        if (!this.modal) {
-            console.warn(`Modal element with id '${modalId}' not found`);
-            return;
-        }
-        
-        if (!this.form) {
-            console.warn(`Form element with id '${formId}' not found`);
-        }
-        
-        if (!this.cancelBtn) {
-            console.warn(`Cancel button with id '${cancelBtnId}' not found`);
-        }
-        
-        this.init();
-    }
-    
-    init() {
-        // ESCキーでモーダルを閉じる
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this._isOpen) {
-                this.close();
-            }
-        });
-        
-        // モーダル外クリックで閉じる
-        if (this.modal) {
-            this.modal.addEventListener('click', (e) => {
-                if (e.target === this.modal && this._isOpen) {
-                    this.close();
-                }
-            });
-        }
-        
-        // キャンセルボタンでモーダルを閉じる
-        if (this.cancelBtn) {
-            this.cancelBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.close();
-            });
-        }
-    }
-    
-    open() {
-        if (this.modal) {
-            this.modal.classList.remove('hidden');
-            this._isOpen = true;
-            console.log("モーダルオープン:", this.modal.id);
-            
-            // フォーカス管理
-            const firstInput = this.form?.querySelector('input, textarea, select');
-            if (firstInput) {
-                setTimeout(() => firstInput.focus(), 100);
-            }
-        }
-    }
-    
-    close() {
-        if (this.modal) {
-            this.modal.classList.add('hidden');
-            this._isOpen = false;
-            console.log("モーダルクローズ:", this.modal.id);
-            
-            // フォームリセット
-            if (this.form) {
-                this.form.reset();
-            }
-        }
-    }
-    
-    // モーダルが開いているかどうかを返す
-    isOpen() {
-        return this._isOpen;
-    }
-    
-    // レガシー互換性のため
-    get isModalOpen() {
-        return this._isOpen;
-    }
-}
-
 // タスク編集機能
 document.addEventListener('DOMContentLoaded', () => {
     console.log("タスク編集機能初期化開始");
     
-    // ModalManagerの存在確認
-    if (typeof ModalManager === 'undefined') {
-        console.error("ModalManagerが読み込まれていません");
-        return;
-    }
-    
-    const modalManager = new ModalManager('edit-modal', 'edit-form', 'cancel-edit');
-    const deleteModeManager = window.deleteModeManager || new DeleteModeManager();
+    const modal = document.getElementById('edit-modal');
+    const form = document.getElementById('edit-form');
+    const cancelBtn = document.getElementById('cancel-edit');
     
     let currentTaskId = null;
     let currentCategoryId = null;
-    let originalCategoryId = null; // 元のカテゴリーIDを保存
+    let originalCategoryId = null;
 
-    // 複数のタスクリストに対応
-    const taskLists = document.querySelectorAll('.task-list');
-    taskLists.forEach(taskList => {
-        if (taskList) {
-            taskList.addEventListener('click', (e) => {
-                // 削除モード中は編集を無効化
-                if (deleteModeManager.isAnyModeActive()) return;
+    if (!modal || !form) {
+        console.error("編集モーダルまたはフォームが見つかりません");
+        return;
+    }
 
-                const taskItem = e.target.closest('.task-item');
-                if (taskItem && !e.target.closest('.delete-task-btn')) {
-                    openEditModal(taskItem);
+    // タスククリック時の編集機能
+    document.addEventListener('click', (e) => {
+        console.log("=== クリックイベント詳細 ===");
+        console.log("クリック対象:", {
+            target: e.target,
+            tagName: e.target.tagName,
+            className: e.target.className,
+            id: e.target.id
+        });
+        
+        // より厳密にタスクアイテムを検索
+        let taskItem = null;
+        
+        // 1. 直接的な検索
+        if (e.target.classList.contains('task-item')) {
+            taskItem = e.target;
+        }
+        // 2. 親要素を検索
+        else if (e.target.closest) {
+            taskItem = e.target.closest('.task-item');
+        }
+        // 3. 手動で親要素を遡る
+        else {
+            let element = e.target;
+            while (element && element !== document) {
+                if (element.classList && element.classList.contains('task-item')) {
+                    taskItem = element;
+                    break;
                 }
+                element = element.parentElement;
+            }
+        }
+        
+        console.log("タスクアイテム検索結果:", taskItem);
+        
+        if (taskItem) {
+            console.log("タスクアイテム発見:", {
+                taskId: taskItem.getAttribute('data-id'),
+                taskTitle: taskItem.getAttribute('data-title'),
+                element: taskItem
             });
+            
+            // 削除ボタンのクリックでない場合のみ編集モーダルを開く
+            if (!e.target.closest('.delete-task-btn')) {
+                console.log("編集モーダル開く条件チェック:");
+                console.log("- タスクアイテム:", !!taskItem);
+                console.log("- 削除ボタンではない:", !e.target.closest('.delete-task-btn'));
+                console.log("- 削除モード:", window.deleteModeManager?.isAnyModeActive());
+                console.log("- ドラッグ中:", document.body.classList.contains('task-dragging'));
+                
+                // 削除モードがアクティブな場合は編集を無効化
+                if (window.deleteModeManager && window.deleteModeManager.isAnyModeActive()) {
+                    console.log("削除モードがアクティブのため編集無効");
+                    return;
+                }
+                
+                // ドラッグ中は編集しない
+                if (document.body.classList.contains('task-dragging')) {
+                    console.log("ドラッグ中のため編集無効");
+                    return;
+                }
+                
+                console.log("編集モーダル開始実行");
+                openEditModal(taskItem);
+            }
+        } else {
+            console.log("タスクアイテムが見つかりません - ULクリックの可能性");
+            
+            // ULがクリックされた場合、その中のタスクアイテムを確認
+            if (e.target.classList.contains('task-list')) {
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                console.log("UL内クリック座標:", { x, y });
+                
+                // クリック座標にあるタスクアイテムを探す
+                const taskItems = e.target.querySelectorAll('.task-item');
+                taskItems.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    const itemX = itemRect.left - rect.left;
+                    const itemY = itemRect.top - rect.top;
+                    
+                    if (x >= itemX && x <= itemX + itemRect.width &&
+                        y >= itemY && y <= itemY + itemRect.height) {
+                        console.log("座標からタスクアイテム発見:", item);
+                        
+                        if (!window.deleteModeManager?.isAnyModeActive() && 
+                            !document.body.classList.contains('task-dragging')) {
+                            openEditModal(item);
+                        }
+                    }
+                });
+            }
+            
+            return;
         }
     });
 
     function openEditModal(item) {
-        console.log("編集モーダル開く:", item.dataset);
+        console.log("編集モーダル開始");
         
-        currentTaskId = item.dataset.id;
-        currentCategoryId = item.dataset.category;
-        originalCategoryId = item.dataset.category; // 元のカテゴリーを保存
+        const itemData = {
+            id: item.getAttribute('data-id'),
+            title: item.getAttribute('data-title'),
+            content: item.getAttribute('data-content'),
+            category: item.getAttribute('data-category')
+        };
         
-        const form = modalManager.form;
-        if (!form) {
-            console.error("編集フォームが見つかりません");
-            return;
-        }
+        console.log("タスクデータ:", itemData);
+        
+        currentTaskId = itemData.id;
+        currentCategoryId = itemData.category;
+        originalCategoryId = itemData.category;
         
         const titleInput = form.querySelector('input[name="title"]');
         const contentTextarea = form.querySelector('textarea[name="content"]');
         const categorySelect = form.querySelector('select[name="category_id"]');
         
-        // フォームに値を設定
-        if (titleInput) titleInput.value = item.dataset.title || '';
-        if (contentTextarea) contentTextarea.value = item.dataset.content || '';
+        if (titleInput) titleInput.value = itemData.title || '';
+        if (contentTextarea) contentTextarea.value = itemData.content || '';
         if (categorySelect) categorySelect.value = currentCategoryId;
         
         console.log("フォーム値設定:", {
@@ -147,164 +144,125 @@ document.addEventListener('DOMContentLoaded', () => {
             category: categorySelect?.value
         });
         
-        // モーダル状態をグローバルに設定
-        if (typeof window.setIsEditModalOpen === 'function') {
-            window.setIsEditModalOpen(true);
-        }
+        modal.classList.remove('hidden');
         
-        modalManager.open();
-    }
-
-    // フォーム送信処理
-    if (modalManager.form) {
-        modalManager.form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(modalManager.form);
-            const newTitle = formData.get('title');
-            const newContent = formData.get('content');
-            const newCategoryId = formData.get('category_id');
-            
-            console.log("送信データ:", {
-                title: newTitle,
-                content: newContent,
-                category: newCategoryId,
-                taskId: currentTaskId
-            });
-            
-            try {
-                const response = await fetch(`/admin/edit_task/${currentTaskId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        title: newTitle,
-                        content: newContent,
-                        category_id: newCategoryId
-                    })
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log("更新成功:", result);
-                    
-                    // UI更新
-                    await updateTaskInUI(currentTaskId, {
-                        title: newTitle,
-                        content: newContent,
-                        category_id: newCategoryId
-                    });
-                    
-                    // モーダル閉じる
-                    closeEditModal();
-                    
-                } else {
-                    const errorData = await response.json();
-                    console.error("更新エラー:", errorData);
-                    alert('更新に失敗しました: ' + (errorData.error || '不明なエラー'));
-                }
-            } catch (error) {
-                console.error("通信エラー:", error);
-                alert('通信エラーが発生しました: ' + error.message);
+        // フォーカス
+        setTimeout(() => {
+            if (titleInput) {
+                titleInput.focus();
+                titleInput.select();
             }
-        });
+        }, 100);
+        
+        console.log("編集モーダル表示完了");
     }
 
     function closeEditModal() {
-        modalManager.close();
-        
-        // モーダル状態をリセット
-        if (typeof window.setIsEditModalOpen === 'function') {
-            window.setIsEditModalOpen(false);
-        }
-        
-        // 変数をリセット
+        console.log("編集モーダル閉じる");
+        modal.classList.add('hidden');
+        form.reset();
         currentTaskId = null;
         currentCategoryId = null;
         originalCategoryId = null;
     }
 
-    // キャンセルボタンの処理も更新
-    if (modalManager.cancelBtn) {
-        modalManager.cancelBtn.addEventListener('click', () => {
+    // キャンセルボタン
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             closeEditModal();
         });
     }
 
-    async function updateTaskInUI(taskId, updatedData) {
+    // モーダル外クリック
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeEditModal();
+        }
+    });
+
+    // ESCキー
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeEditModal();
+        }
+    });
+
+    // フォーム送信
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const newTitle = formData.get('title');
+        const newContent = formData.get('content');
+        const newCategoryId = formData.get('category_id');
+        
+        console.log("フォーム送信データ:", {
+            taskId: currentTaskId,
+            title: newTitle,
+            content: newContent,
+            categoryId: newCategoryId
+        });
+        
+        try {
+            const response = await fetch(`/admin/edit_task/${currentTaskId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: newTitle,
+                    content: newContent,
+                    category_id: newCategoryId
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("更新成功:", result);
+                
+                updateTaskInUI(currentTaskId, {
+                    title: newTitle,
+                    content: newContent,
+                    category_id: newCategoryId
+                });
+                
+                closeEditModal();
+                
+            } else {
+                const errorData = await response.json();
+                console.error("更新エラー:", errorData);
+            }
+        } catch (error) {
+            console.error("通信エラー:", error);
+        }
+    });
+
+    function updateTaskInUI(taskId, updatedData) {
         console.log("UI更新開始:", taskId, updatedData);
         
-        // 全てのタスクリストから該当タスクを検索
         const allTaskItems = document.querySelectorAll(`[data-id="${taskId}"]`);
+        console.log("更新対象タスクアイテム数:", allTaskItems.length);
         
         allTaskItems.forEach(taskItem => {
-            // データセットを更新
-            taskItem.dataset.title = updatedData.title;
-            taskItem.dataset.content = updatedData.content;
-            taskItem.dataset.category = updatedData.category_id;
+            taskItem.setAttribute('data-title', updatedData.title);
+            taskItem.setAttribute('data-content', updatedData.content);
+            taskItem.setAttribute('data-category', updatedData.category_id);
             
-            // タイトル表示を更新
-            const titleSpan = taskItem.querySelector('.task-title');
-            if (titleSpan) {
-                titleSpan.textContent = updatedData.title;
+            const titleElement = taskItem.querySelector('.task-title');
+            if (titleElement) {
+                titleElement.textContent = updatedData.title;
             }
-            
-            console.log("UI更新完了:", taskItem.dataset);
         });
 
-        // データマネージャーを更新
         if (window.dataManager) {
-            const updated = window.dataManager.updateTaskData(taskId, {
+            window.dataManager.updateTaskData(taskId, {
                 title: updatedData.title,
                 content: updatedData.content,
                 category_id: updatedData.category_id
             });
-            console.log("データマネージャー更新:", updated);
-        }
-
-        // カテゴリーが変更された場合の処理
-        if (originalCategoryId && updatedData.category_id !== originalCategoryId) {
-            console.log("カテゴリー変更を検出:", originalCategoryId, "→", updatedData.category_id);
-            
-            // 現在表示中のカテゴリーを確認
-            const currentSelectedCategoryId = typeof window.getSelectedCategoryId === 'function' 
-                ? window.getSelectedCategoryId() 
-                : null;
-            
-            // TODOリストを再描画（現在選択中のカテゴリーのタスクのみ表示）
-            if (currentSelectedCategoryId && window.TaskRenderer) {
-                const todoList = document.getElementById('todo-tasks');
-                if (todoList) {
-                    window.TaskRenderer.renderTaskList(currentSelectedCategoryId, todoList);
-                }
-            }
         }
     }
-
-    // グローバル関数として公開（安全なチェック付き）
-    window.openTaskEditModal = openEditModal;
-    
-    window.getIsEditModalOpen = () => {
-        try {
-            if (modalManager && typeof modalManager.isOpen === 'function') {
-                return modalManager.isOpen();
-            } else if (modalManager && modalManager.isModalOpen !== undefined) {
-                return modalManager.isModalOpen;
-            } else {
-                console.warn("modalManager.isOpen()が利用できません");
-                return false;
-            }
-        } catch (error) {
-            console.error("getIsEditModalOpen エラー:", error);
-            return false;
-        }
-    };
-    
-    window.setIsEditModalOpen = (isOpen) => {
-        // 将来的な拡張用
-        console.log("編集モーダル状態設定:", isOpen);
-    };
     
     console.log("タスク編集機能初期化完了");
 });

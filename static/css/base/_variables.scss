@@ -34,18 +34,33 @@ $gray-800: #424242;
 $gray-900: #212121;
 $black: #000000;
 
+// プライマリカラー（アクセント用）
+// ----------------------------------------
+$primary-color: $gray-800;        // メインプライマリ
+$primary-color-light: $gray-600;  // 明るい版
+$primary-color-dark: $gray-900;   // 暗い版
+
+// 機能的なカラー
+// ----------------------------------------
+$success-color: #4CAF50;  // 成功・ドロップゾーン用
+$warning-color: #ff9800;  // 警告用
+$danger-color: #ff6b6b;   // 削除・エラー用
+$info-color: #2196F3;     // 情報用
+
 // セマンティックカラー
 // ----------------------------------------
 $color-bg: $white;
 $color-surface: $white;
 
 $color-text: $gray-900;
+$color-text-primary: $gray-900;
 $color-text-secondary: $gray-700;
 $color-text-muted: $gray-500;
 
 $color-border: $gray-300;
 $color-hover: $gray-100;
 $color-active: $gray-200;
+$color-focus: $gray-600;
 
 // スペーシング
 // ----------------------------------------
@@ -59,6 +74,7 @@ $spacing-2xl: 3rem;     // 48px
 // ボーダー・影
 // ----------------------------------------
 $border-radius: 0.375rem; // 6px
+$border-radius-base: 0.375rem; // 追加: ベースボーダー半径
 $border: 1px solid $color-border;
 $shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 $shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.12);
@@ -66,6 +82,7 @@ $shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.12);
 // トランジション
 // ----------------------------------------
 $transition: 200ms ease-in-out;
+$transition-base: 200ms ease-in-out; // 追加: ベーストランジション
 
 // レイアウト
 // ----------------------------------------

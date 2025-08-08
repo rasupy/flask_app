@@ -53,8 +53,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     body: formData
                 });
 
+                // カテゴリー追加成功後の処理
                 if (response.ok) {
-                    // ページリロード（カテゴリー一覧の更新のため）
+                    categoryModal.classList.add("hidden");
+                    
+                    // 削除モードをリセット
+                    if (window.deleteModeManager) {
+                        window.deleteModeManager.setMode('category', false);
+                        window.deleteModeManager.setMode('task', false);
+                    }
+                    
                     location.reload();
                 } else {
                     alert("カテゴリーの追加に失敗しました");

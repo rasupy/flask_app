@@ -76,17 +76,20 @@ class DataManager {
     updateTaskStatus(taskId, newStatus) {
         let updated = false;
         
+        // UUIDの場合は文字列として比較
+        const taskIdStr = String(taskId);
+        
         // allPostsのデータを更新
         Object.keys(this.allPosts).forEach(categoryId => {
             const tasks = this.allPosts[categoryId];
-            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            const taskIndex = tasks.findIndex(task => String(task.id) === taskIdStr);
             if (taskIndex !== -1) {
                 const oldStatus = tasks[taskIndex].status;
                 tasks[taskIndex].status = newStatus;
                 
                 // postsByStatusも更新
                 if (this.postsByStatus[oldStatus]) {
-                    const oldStatusIndex = this.postsByStatus[oldStatus].findIndex(t => t.id === taskId);
+                    const oldStatusIndex = this.postsByStatus[oldStatus].findIndex(t => String(t.id) === taskIdStr);
                     if (oldStatusIndex !== -1) {
                         const task = this.postsByStatus[oldStatus].splice(oldStatusIndex, 1)[0];
                         task.status = newStatus;
@@ -114,8 +117,10 @@ class DataManager {
 
     removeTaskFromCategory(categoryId, taskId) {
         if (this.allPosts[categoryId]) {
+            // UUIDの場合は文字列として比較
+            const taskIdStr = String(taskId);
             this.allPosts[categoryId] = this.allPosts[categoryId].filter(
-                task => task.id !== taskId
+                task => String(task.id) !== taskIdStr
             );
         }
     }
@@ -130,10 +135,13 @@ class DataManager {
     updateTaskData(taskId, newData) {
         let updated = false;
         
+        // UUIDの場合は文字列として比較
+        const taskIdStr = String(taskId);
+        
         // allPostsのデータを更新
         Object.keys(this.allPosts).forEach(categoryId => {
             const tasks = this.allPosts[categoryId];
-            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            const taskIndex = tasks.findIndex(task => String(task.id) === taskIdStr);
             if (taskIndex !== -1) {
                 const task = tasks[taskIndex];
                 
@@ -166,7 +174,7 @@ class DataManager {
         if (this.postsByStatus) {
             Object.keys(this.postsByStatus).forEach(status => {
                 const tasks = this.postsByStatus[status];
-                const taskIndex = tasks.findIndex(task => task.id === taskId);
+                const taskIndex = tasks.findIndex(task => String(task.id) === taskIdStr);
                 if (taskIndex !== -1) {
                     const task = tasks[taskIndex];
                     

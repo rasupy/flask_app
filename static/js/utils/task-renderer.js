@@ -2,34 +2,26 @@
 class TaskRenderer {
     static createTaskElement(task, index = 0) {
         const li = document.createElement("li");
-        li.className = "task-item animate";
-        li.dataset.id = task.id;
-        li.dataset.title = task.title;
-        li.dataset.content = task.content || "";
-        li.dataset.category = task.category_id;
-        li.dataset.status = task.status || "todo";
+        li.className = "task-item";
+        li.setAttribute("data-id", task.id);
+        li.setAttribute("data-title", task.title);
+        li.setAttribute("data-content", task.content || "");
+        li.setAttribute("data-category", task.category_id);
+        li.setAttribute("data-status", task.status || "todo");
         
-        // 削除ボタンを作成（TODOタスクのみ）
-        if (task.status === "todo") {
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "delete-task-btn material-symbols-outlined hidden";
-            deleteBtn.dataset.taskId = task.id;
-            deleteBtn.textContent = "delete";
-            li.appendChild(deleteBtn);
-        }
-        
-        // タスクタイトルを作成
+        // シンプルなタイトル表示のみ
         const titleSpan = document.createElement("span");
         titleSpan.className = "task-title";
         titleSpan.textContent = task.title;
+        
         li.appendChild(titleSpan);
         
-        // アニメーション遅延を設定
-        li.style.animationDelay = `${index * 0.1}s`;
-        
-        // アニメーション完了後にクラスを追加
-        li.addEventListener('animationend', () => {
-            li.classList.add('animation-complete');
+        console.log("タスク要素作成:", {
+            id: task.id,
+            title: task.title,
+            element: li,
+            clickable: true,
+            outerHTML: li.outerHTML
         });
         
         return li;
@@ -43,7 +35,7 @@ class TaskRenderer {
         // TODOリストの場合はカテゴリー別にフィルタ
         if (taskListElement.id === "todo-tasks") {
             if (!categoryId) {
-                taskListElement.innerHTML = ''; // 完全に空にする
+                taskListElement.innerHTML = '';
                 return;
             }
 
@@ -56,7 +48,6 @@ class TaskRenderer {
             taskListElement.innerHTML = "";
             
             if (todoTasks.length === 0) {
-                // 空の場合は何も表示しない
                 return;
             }
 
@@ -77,7 +68,6 @@ class TaskRenderer {
                 taskListElement.innerHTML = "";
                 
                 if (statusTasks.length === 0) {
-                    // 空の場合は何も表示しない
                     return;
                 }
 
@@ -89,10 +79,36 @@ class TaskRenderer {
             }
         }
 
-        // 削除ボタンの表示状態を更新
-        if (typeof window.updateDeleteButtonsVisibility === 'function') {
-            window.updateDeleteButtonsVisibility();
+        // 削除モードがアクティブな場合のみ削除ボタンを追加
+        if (window.deleteModeManager && window.deleteModeManager.getMode('task')) {
+            setTimeout(() => {
+                TaskRenderer.addDeleteButtonsToTasks();
+            }, 50);
         }
+    }
+
+    // 削除ボタンを動的に追加する機能を修正
+    static addDeleteButtonsToTasks() {
+        document.querySelectorAll('.task-item').forEach(taskItem => {
+            // 既に削除ボタンがある場合はスキップ
+            if (taskItem.querySelector('.delete-task-btn')) return;
+            
+            const taskId = taskItem.getAttribute('data-id');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-task-btn material-symbols-outlined visible';
+            deleteBtn.setAttribute('data-task-id', taskId);
+            deleteBtn.textContent = 'delete';
+            
+            // タスクタイトルの前（最初）に挿入
+            taskItem.insertBefore(deleteBtn, taskItem.firstChild);
+        });
+    }
+
+    // 削除ボタンを削除する機能
+    static removeDeleteButtonsFromTasks() {
+        document.querySelectorAll('.delete-task-btn').forEach(btn => {
+            btn.remove();
+        });
     }
 
     // 初期化時にProgressとArchiveリストを描画
@@ -124,6 +140,7 @@ class TaskRenderer {
     static removeTaskFromList(taskId, taskListElement) {
         if (!taskListElement) return;
 
+        // UUIDの場合も文字列として比較
         const taskElement = taskListElement.querySelector(`[data-id="${taskId}"]`);
         if (taskElement) {
             taskElement.remove();
@@ -134,6 +151,7 @@ class TaskRenderer {
         // 既存のタスクを全リストから削除
         const allLists = document.querySelectorAll('.task-list');
         allLists.forEach(list => {
+            // UUIDの場合も文字列として比較
             const taskElement = list.querySelector(`[data-id="${taskId}"]`);
             if (taskElement) {
                 taskElement.remove();
@@ -142,15 +160,15 @@ class TaskRenderer {
 
         // データマネージャーからタスクを取得
         if (window.dataManager && window.dataManager.postsByStatus) {
-            const task = window.dataManager.postsByStatus[newStatus]?.find(t => t.id === taskId);
+            // UUIDの場合は文字列として比較
+            const task = window.dataManager.postsByStatus[newStatus]?.find(t => String(t.id) === String(taskId));
             if (task) {
                 // 新しいステータスのリストに追加
                 const targetListId = newStatus === 'todo' ? 'todo-tasks' : 
                                    newStatus === 'progress' ? 'progress-tasks' : 'archive-tasks';
                 const targetList = document.getElementById(targetListId);
                 if (targetList) {
-                    const taskElement = TaskRenderer.createTaskElement(task);
-                    targetList.appendChild(taskElement);
+                    TaskRenderer.addTaskToList(task, targetList);
                 }
             }
         }

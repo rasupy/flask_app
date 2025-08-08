@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 初期化処理：何も表示しない状態
+    // 初期化処理：カテゴリー未選択状態
     function initializeEmptyState() {
         console.log("初期状態: カテゴリー未選択");
         
@@ -40,13 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // selectedCategoryIdをnullに設定
         selectedCategoryId = null;
         
-        // TODOリストを空に設定（メッセージなし）
+        // TODOリストを空にする（メッセージなし）
         if (taskList) {
             taskList.dataset.currentCategoryId = '';
-            taskList.innerHTML = ''; // 完全に空にする
+            taskList.innerHTML = '';
         }
         
-        console.log("初期化完了: 空の状態");
+        console.log("初期化完了: カテゴリー未選択状態");
     }
 
     // 初期化実行
