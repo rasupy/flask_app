@@ -79,19 +79,36 @@
     opacity: 0;
 }
 
-/* テキスト選択無効化（ドラッグ機能は残す）
+/* テキスト選択の制御（選択範囲のカスタマイズと併用）
 =================================================== */
 .category-item,
+.task-item {
+    // ドラッグ中のみテキスト選択を無効化
+    &.sortable-chosen,
+    &.sortable-ghost,
+    &.sortable-drag {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}
+
 .category-button,
-.task-item,
 .task-title,
 .delete-task-btn,
 .delete-category-btn {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
     -webkit-tap-highlight-color: transparent;
+    
+    // 通常時は選択可能、ドラッグ中は無効化
+    .sortable-chosen &,
+    .sortable-ghost &,
+    .sortable-drag & {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 }
 
 /* カテゴリーボタンの基本スタイル */
@@ -127,18 +144,60 @@
 .sortable-ghost {
     opacity: 0.4;
     background-color: #f0f0f0;
+    
+    // ゴースト時は選択範囲を無効化
+    &::selection {
+        background: transparent;
+    }
+    
+    &::-moz-selection {
+        background: transparent;
+    }
+    
+    &::-webkit-selection {
+        background: transparent;
+    }
 }
 
 .sortable-chosen {
     background-color: #e3f2fd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: scale(1.02);
+    
+    // 選択時は専用の選択範囲カラー
+    &::selection {
+        background-color: rgba(33, 150, 243, 0.4);
+        color: inherit;
+    }
+    
+    &::-moz-selection {
+        background-color: rgba(33, 150, 243, 0.4);
+        color: inherit;
+    }
+    
+    &::-webkit-selection {
+        background-color: rgba(33, 150, 243, 0.4);
+        color: inherit;
+    }
 }
 
 .sortable-drag {
     opacity: 0.8;
     transform: rotate(3deg);
     z-index: 1000;
+    
+    // ドラッグ時は選択範囲を無効化
+    &::selection {
+        background: transparent;
+    }
+    
+    &::-moz-selection {
+        background: transparent;
+    }
+    
+    &::-webkit-selection {
+        background: transparent;
+    }
 }
 
 /* タスク移動時のアニメーション */

@@ -1,0 +1,129 @@
+// ========================================
+// ボタンコンポーネント
+// ========================================
+@use '../base/variables' as var;
+
+// ベースボタンスタイル
+// ----------------------------------------
+%button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var.$spacing-sm var.$spacing-base;
+    font-family: inherit;
+    font-size: var.$font-size-base;
+    font-weight: var.$font-weight-medium;
+    line-height: 1;
+    text-decoration: none;
+    border: var.$border-width-thin var.$border-style transparent;
+    border-radius: var.$border-radius-base;
+    cursor: pointer;
+    transition: all var.$transition-base;
+    user-select: none;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+
+// プライマリーボタン
+// ----------------------------------------
+.btn-primary {
+    @extend %button-base;
+    background-color: var.$color-accent-primary;
+    color: var.$color-text-inverse;
+    border-color: var.$color-accent-primary;
+
+    &:hover {
+        background-color: var.$color-gray-800;
+        border-color: var.$color-gray-800;
+        box-shadow: var.$shadow-base;
+    }
+
+    &:active {
+        transform: translateY(1px);
+        box-shadow: var.$shadow-sm;
+    }
+}
+
+// セカンダリーボタン
+// ----------------------------------------
+.btn-secondary {
+    @extend %button-base;
+    background-color: transparent;
+    color: var.$color-text-primary;
+    border-color: var.$color-border-medium;
+
+    &:hover {
+        background-color: var.$color-hover;
+        border-color: var.$color-border-dark;
+    }
+
+    &:active {
+        background-color: var.$color-active;
+    }
+}
+
+// ゴーストボタン
+// ----------------------------------------
+.btn-ghost {
+    @extend %button-base;
+    background-color: transparent;
+    color: var.$color-text-secondary;
+    border: none;
+
+    &:hover {
+        background-color: var.$color-hover;
+        color: var.$color-text-primary;
+    }
+
+    &:active {
+        background-color: var.$color-active;
+    }
+}
+
+// 危険なアクション用ボタン
+// ----------------------------------------
+.btn-danger {
+    @extend %button-base;
+    background-color: var.$color-error;
+    color: var.$color-text-inverse;
+    border-color: var.$color-error;
+
+    &:hover {
+        background-color: var.$color-gray-900;
+        border-color: var.$color-gray-900;
+        box-shadow: var.$shadow-base;
+    }
+}
+
+// サイズバリエーション
+// ----------------------------------------
+.btn-sm {
+    padding: var.$spacing-xs calc(var.$spacing-sm + 2px);
+    font-size: var.$font-size-sm;
+}
+
+.btn-lg {
+    padding: var.$spacing-base var.$spacing-md;
+    font-size: var.$font-size-md;
+}
+
+// アイコンボタン
+// ----------------------------------------
+.btn-icon {
+    @extend %button-base;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    background-color: transparent;
+    color: var.$color-text-secondary;
+    border: none;
+
+    &:hover {
+        background-color: var.$color-hover;
+        color: var.$color-text-primary;
+    }
+}

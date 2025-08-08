@@ -179,6 +179,28 @@ class DataManager {
 
         return updated;
     }
+
+    removeCategory(categoryId) {
+        console.log("データマネージャー: カテゴリー削除", categoryId);
+        
+        // allPostsからカテゴリーを削除
+        if (this.allPosts && this.allPosts[categoryId]) {
+            delete this.allPosts[categoryId];
+            console.log("allPostsからカテゴリーを削除:", categoryId);
+        }
+        
+        // postsByStatusからカテゴリーに属するタスクを削除
+        if (this.postsByStatus) {
+            Object.keys(this.postsByStatus).forEach(status => {
+                this.postsByStatus[status] = this.postsByStatus[status].filter(
+                    task => task.category_id !== categoryId
+                );
+            });
+            console.log("postsByStatusからカテゴリーのタスクを削除:", categoryId);
+        }
+        
+        return true;
+    }
 }
 
 // グローバルに公開

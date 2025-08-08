@@ -166,26 +166,62 @@ def add_category():
     return redirect(url_for("admin"))
 
 
-@app.route("/admin/delete_category/<category_id>", methods=["POST"])
+@app.route("/admin/delete_category/<category_id>", methods=["POST", "DELETE"])
 def delete_category(category_id):
-    """カテゴリを削除（関連タスクも削除）"""
+    """カテゴリーとそのタスクを削除"""
     try:
-        category_uuid = uuid.UUID(category_id)
-    except ValueError:
-        return jsonify({"error": "無効なカテゴリID"}), 400
+        # UUIDの変換
+        try:
+            category_uuid = uuid.UUID(category_id)
+        except ValueError:
+            return jsonify({"error": "無効なカテゴリーID"}), 400
 
-    with SessionLocal() as session:
-        category = session.query(Category).filter_by(id=category_uuid).first()
+        print(f"Delete category request: {category_uuid}")
 
-        if not category:
-            return jsonify({"error": "カテゴリが見つかりません"}), 404
+        # データベース処理
+        with SessionLocal() as session:
+            # カテゴリーの存在確認
+            category = (
+                session.query(Category).filter_by(id=category_uuid).first()
+            )
+            if not category:
+                return jsonify({"error": "カテゴリーが見つかりません"}), 404
 
-        # 関連するタスクも削除（CASCADE設定により自動削除されるが明示的に実行）
-        session.query(Post).filter_by(category_id=category_uuid).delete()
-        session.delete(category)
-        session.commit()
+            category_name = category.name
 
-    return "", 204
+            # カテゴリーに属するタスクを全て削除
+            posts_to_delete = (
+                session.query(Post)
+                .filter_by(category_id=str(category_uuid))
+                .all()
+            )
+            deleted_task_count = len(posts_to_delete)
+
+            for post in posts_to_delete:
+                session.delete(post)
+                print(f"Deleting task: {post.id} - {post.title}")
+
+            # カテゴリーを削除
+            session.delete(category)
+            session.commit()
+
+            print(
+                f"Category deleted: {category_uuid} - {category_name} (with {deleted_task_count} tasks)"
+            )
+
+            return jsonify(
+                {
+                    "success": True,
+                    "id": str(category_uuid),
+                    "name": category_name,
+                    "deleted_tasks": deleted_task_count,
+                    "message": f"カテゴリー '{category_name}' と関連タスク {deleted_task_count}件を削除しました",
+                }
+            )
+
+    except Exception as e:
+        print(f"Delete category error: {e}")
+        return jsonify({"error": f"サーバーエラー: {str(e)}"}), 500
 
 
 @app.route("/update_task_order", methods=["POST"])

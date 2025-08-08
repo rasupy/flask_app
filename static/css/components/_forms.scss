@@ -1,0 +1,201 @@
+// ========================================
+// フォーム・モーダルコンポーネント
+// ========================================
+@use '../base/variables' as var;
+
+// モーダル
+// ----------------------------------------
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: var.$modal-width;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    transform: translate(-50%, -50%);
+    background: var.$color-surface;
+    border: var.$border-width-thin var.$border-style var.$color-border-light;
+    border-radius: var.$border-radius-lg;
+    box-shadow: var.$shadow-xl;
+    z-index: var.$z-modal;
+    overflow: hidden;
+
+    &.hidden {
+        display: none;
+    }
+}
+
+.modal-form {
+    padding: var.$spacing-xl;
+    display: flex;
+    flex-direction: column;
+    gap: var.$spacing-base;
+}
+
+.modal-title {
+    font-size: var.$font-size-xl;
+    font-weight: var.$font-weight-medium;
+    color: var.$color-text-primary;
+    margin-bottom: var.$spacing-sm;
+    letter-spacing: 0.01em;
+}
+
+// フォームコントロール
+// ----------------------------------------
+%form-control-base {
+    width: 100%;
+    padding: var.$spacing-sm;
+    font-family: inherit;
+    font-size: var.$font-size-base;
+    color: var.$color-text-primary;
+    background: var.$color-surface;
+    border: var.$border-width-thin var.$border-style var.$color-border-medium;
+    border-radius: var.$border-radius-base;
+    transition: all var.$transition-base;
+
+    &:focus {
+        outline: none;
+        border-color: var.$color-focus;
+        box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+    }
+
+    &:disabled {
+        background-color: var.$color-gray-100;
+        color: var.$color-text-tertiary;
+        cursor: not-allowed;
+    }
+
+    &::placeholder {
+        color: var.$color-text-tertiary;
+    }
+}
+
+// 入力フィールド
+// ----------------------------------------
+.form-input {
+    @extend %form-control-base;
+}
+
+.form-textarea {
+    @extend %form-control-base;
+    min-height: 4rem;
+    resize: vertical;
+    line-height: var.$line-height-base;
+}
+
+.form-select {
+    @extend %form-control-base;
+    cursor: pointer;
+
+    &:focus {
+        cursor: pointer;
+    }
+}
+
+// 特定のフィールド
+// ----------------------------------------
+.textbox-category,
+.add-task-title,
+.edit-task-title {
+    @extend .form-input;
+}
+
+.add-task-content,
+.edit-task-content {
+    @extend .form-textarea;
+    min-height: 6rem;
+}
+
+.edit-task-category {
+    @extend .form-select;
+}
+
+// フォームボトム情報
+// ----------------------------------------
+.task-modal-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var.$font-size-sm;
+    color: var.$color-text-secondary;
+    margin-bottom: var.$spacing-sm;
+}
+
+.task-modal-bottom-sub {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: var.$font-size-sm;
+    color: var.$color-text-secondary;
+}
+
+.char-count {
+    font-size: var.$font-size-sm;
+    color: var.$color-text-tertiary;
+    text-align: right;
+    margin-bottom: var.$spacing-sm;
+
+    &.warning {
+        color: var.$color-warning;
+    }
+
+    &.error {
+        color: var.$color-error;
+    }
+}
+
+// モーダルボタン
+// ----------------------------------------
+.modal-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: var.$spacing-sm;
+    margin-top: var.$spacing-base;
+    padding-top: var.$spacing-base;
+    border-top: var.$border-width-thin var.$border-style var.$color-border-light;
+}
+
+.modal-btn {
+    padding: var.$spacing-sm var.$spacing-base;
+    font-size: var.$font-size-base;
+    font-weight: var.$font-weight-medium;
+    color: var.$color-text-primary;
+    background: var.$color-surface;
+    border: var.$border-width-thin var.$border-style var.$color-border-medium;
+    border-radius: var.$border-radius-base;
+    cursor: pointer;
+    transition: all var.$transition-base;
+
+    &:hover {
+        background: var.$color-hover;
+        border-color: var.$color-border-dark;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &.primary {
+        background: var.$color-accent-primary;
+        color: var.$color-text-inverse;
+        border-color: var.$color-accent-primary;
+
+        &:hover {
+            background: var.$color-gray-800;
+            border-color: var.$color-gray-800;
+        }
+    }
+}
+
+// レスポンシブ調整
+// ----------------------------------------
+@media (max-width: 480px) {
+    .modal {
+        width: calc(100vw - 1rem);
+        margin: 0.5rem;
+    }
+
+    .modal-form {
+        padding: var.$spacing-lg;
+    }
+}

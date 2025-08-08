@@ -101,18 +101,36 @@
   opacity: 0;
 }
 
-/* テキスト選択無効化（ドラッグ機能は残す）
+/* テキスト選択の制御（選択範囲のカスタマイズと併用）
 =================================================== */
-.category-item,
-.category-button,
-.task-item,
-.task-title,
-.delete-task-btn,
-.delete-category-btn {
+.category-item.sortable-chosen, .category-item.sortable-ghost, .category-item.sortable-drag,
+.task-item.sortable-chosen,
+.task-item.sortable-ghost,
+.task-item.sortable-drag {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+}
+
+.category-button,
+.task-title,
+.delete-task-btn,
+.delete-category-btn {
   -webkit-tap-highlight-color: transparent;
+}
+.sortable-chosen .category-button, .sortable-ghost .category-button, .sortable-drag .category-button,
+.sortable-chosen .task-title,
+.sortable-ghost .task-title,
+.sortable-drag .task-title,
+.sortable-chosen .delete-task-btn,
+.sortable-ghost .delete-task-btn,
+.sortable-drag .delete-task-btn,
+.sortable-chosen .delete-category-btn,
+.sortable-ghost .delete-category-btn,
+.sortable-drag .delete-category-btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 /* カテゴリーボタンの基本スタイル */
@@ -145,17 +163,57 @@
   opacity: 0.4;
   background-color: #f0f0f0;
 }
+.sortable-ghost::-moz-selection {
+  background: transparent;
+}
+.sortable-ghost::selection {
+  background: transparent;
+}
+.sortable-ghost::-moz-selection {
+  background: transparent;
+}
+.sortable-ghost::-webkit-selection {
+  background: transparent;
+}
 
 .sortable-chosen {
   background-color: #e3f2fd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: scale(1.02);
 }
+.sortable-chosen::-moz-selection {
+  background-color: rgba(33, 150, 243, 0.4);
+  color: inherit;
+}
+.sortable-chosen::selection {
+  background-color: rgba(33, 150, 243, 0.4);
+  color: inherit;
+}
+.sortable-chosen::-moz-selection {
+  background-color: rgba(33, 150, 243, 0.4);
+  color: inherit;
+}
+.sortable-chosen::-webkit-selection {
+  background-color: rgba(33, 150, 243, 0.4);
+  color: inherit;
+}
 
 .sortable-drag {
   opacity: 0.8;
   transform: rotate(3deg);
   z-index: 1000;
+}
+.sortable-drag::-moz-selection {
+  background: transparent;
+}
+.sortable-drag::selection {
+  background: transparent;
+}
+.sortable-drag::-moz-selection {
+  background: transparent;
+}
+.sortable-drag::-webkit-selection {
+  background: transparent;
 }
 
 /* タスク移動時のアニメーション */

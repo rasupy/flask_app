@@ -1,0 +1,149 @@
+// ========================================
+// レイアウト基本定義
+// ========================================
+@use 'variables' as var;
+
+// リセット・基本設定
+// ----------------------------------------
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var.$font-family-primary;
+    font-size: var.$font-size-base;
+    font-weight: var.$font-weight-normal;
+    line-height: var.$line-height-base;
+    color: var.$color-text-primary;
+    background-color: var.$color-background;
+    overflow-y: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// フォーカス管理
+// ----------------------------------------
+:focus-visible {
+    outline: 2px solid var.$color-focus;
+    outline-offset: 2px;
+}
+
+// テキスト選択
+// ----------------------------------------
+::selection {
+    background-color: var.$color-gray-200;
+    color: var.$color-text-primary;
+}
+
+::-moz-selection {
+    background-color: var.$color-gray-200;
+    color: var.$color-text-primary;
+}
+
+// メインレイアウト
+// ----------------------------------------
+#main-title {
+    font-size: var.$font-size-xl;
+    font-weight: var.$font-weight-medium;
+    color: var.$color-text-primary;
+    margin: var.$spacing-base;
+    letter-spacing: 0.02em;
+}
+
+#contents {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: var.$spacing-base;
+    height: calc(100vh - 4rem);
+    gap: var.$spacing-sm;
+}
+
+// カードグリッドシステム
+// ----------------------------------------
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var.$spacing-sm;
+    width: 100%;
+}
+
+.card {
+    flex: 1 1 calc(25% - var.$spacing-sm);
+    min-width: 280px;
+    background: var.$color-surface;
+    border: var.$border-width-thin var.$border-style var.$color-border-light;
+    border-radius: var.$border-radius-md;
+    padding: var.$card-padding;
+    box-shadow: var.$shadow-base;
+    transition: box-shadow var.$transition-base;
+
+    &:hover {
+        box-shadow: var.$shadow-hover;
+    }
+}
+
+// タイトルバー共通
+// ----------------------------------------
+.title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var.$spacing-sm;
+    border-bottom: var.$border-width-thin var.$border-style var.$color-border-light;
+    margin-bottom: var.$spacing-base;
+}
+
+.title {
+    font-size: var.$font-size-lg;
+    font-weight: var.$font-weight-medium;
+    color: var.$color-text-primary;
+    letter-spacing: 0.01em;
+}
+
+// ボタングループ
+// ----------------------------------------
+.button-group {
+    display: flex;
+    gap: var.$spacing-xs;
+}
+
+// マテリアルアイコン共通
+// ----------------------------------------
+.material-symbols-outlined {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: var.$border-radius-base;
+    background: transparent;
+    color: var.$color-text-secondary;
+    cursor: pointer;
+    transition: all var.$transition-base;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+
+    &:hover {
+        background-color: var.$color-hover;
+        color: var.$color-text-primary;
+    }
+
+    &:active {
+        background-color: var.$color-active;
+        transform: scale(0.95);
+    }
+}
