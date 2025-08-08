@@ -4,14 +4,5 @@
     <h2 class="title">Progress</h2>
 </div>
 <ul id="progress-tasks" class="task-list" data-status="progress">
-    {% for post in posts if post.status == 'progress' %}
-        <li class="task-item"
-            data-id="{{ post.id }}"
-            data-title="{{ post.title }}"
-            data-content="{{ post.content }}"
-            data-category="{{ post.category_id }}"
-            data-status="{{ post.status }}">
-            {{ post.title }}
-        </li>
-    {% endfor %}
+    <!-- JavaScriptで動的に生成 -->
 </ul>

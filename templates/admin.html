@@ -34,20 +34,32 @@
 
 <!-- JavaScriptの読み込み -->
 {% block scripts %}
+    <!-- Sortable.jsライブラリを最初に読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    
     <script id="all-posts-data" type="application/json">
         {{ category_posts | tojson | safe }}
     </script>
+    <script id="posts-by-status-data" type="application/json">
+        {{ posts_by_status | tojson | safe }}
+    </script>
 
-    <!-- ユーティリティ関数（関数定義）を読み込む -->
-    <script src="{{ url_for('static', filename='js/task_utils.js') }}" defer></script>
+    <!-- 基盤機能（順序重要） -->
+    <script src="{{ url_for('static', filename='js/core/modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/core/delete-mode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/core/data-manager.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils/task-renderer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/core/sortable.js') }}"></script>
 
-    <!-- 並び替え系 -->
-    <script src="{{ url_for('static', filename='js/sortable.js') }}" defer></script>
+    <!-- 機能別スクリプト -->
+    <script src="{{ url_for('static', filename='js/features/category-switcher.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features/category-creator.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features/category-deleter.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features/task-creator.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features/task-editor.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features/task-deleter.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/features/task-mover.js') }}"></script>
 
-    <!-- カテゴリ・タスク操作系 -->
-    <script src="{{ url_for('static', filename='js/show_tables.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/delete.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/add.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/count_textarea.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/edit_task.js') }}" defer></script>
+    <!-- ユーティリティ -->
+    <script src="{{ url_for('static', filename='js/utils/textarea-counter.js') }}"></script>
 {% endblock %}

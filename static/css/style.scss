@@ -1,4 +1,15 @@
 @charset "UTF-8";
-@use 'pages/animations';
-@use 'pages/body';
-@use 'pages/add-edit';
+
+// ========================================
+// メインスタイルシート
+// ========================================
+
+// ベース
+@use 'base/variables';
+@use 'base/layout';
+
+// コンポーネント
+@use 'components/components';
+
+// ユーティリティ（必要に応じて）
+// @use 'utilities/helpers';
