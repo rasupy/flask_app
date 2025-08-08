@@ -245,7 +245,15 @@ body {
   color: #212121;
 }
 
-.form-select, .form-textarea, .form-input {
+.modal-form .edit-task-category, .modal-form .add-task-content,
+.modal-form .edit-task-content, .modal-form .add-task-title,
+.modal-form .edit-task-title,
+.modal-form .textbox-category, .modal-form .form-input,
+.modal-form .form-textarea,
+.modal-form .form-select,
+.modal-form input[type=text],
+.modal-form textarea,
+.modal-form select, .form-select, .form-textarea, .form-input {
   width: 100%;
   padding: 0.5rem;
   font: inherit;
@@ -255,14 +263,28 @@ body {
   border-radius: 0.375rem;
   transition: border-color 200ms ease-in-out;
 }
-.form-select:focus, .form-textarea:focus, .form-input:focus {
+.modal-form .edit-task-category:focus, .modal-form .add-task-content:focus,
+.modal-form .edit-task-content:focus, .modal-form .add-task-title:focus,
+.modal-form .edit-task-title:focus,
+.modal-form .textbox-category:focus,
+.modal-form input[type=text]:focus,
+.modal-form textarea:focus,
+.modal-form select:focus, .form-select:focus, .form-textarea:focus, .form-input:focus {
   outline: none;
   border-color: #757575;
 }
-.form-select::-moz-placeholder, .form-textarea::-moz-placeholder, .form-input::-moz-placeholder {
+.modal-form .edit-task-category::-moz-placeholder, .modal-form .add-task-content::-moz-placeholder, .modal-form .edit-task-content::-moz-placeholder, .modal-form .add-task-title::-moz-placeholder, .modal-form .edit-task-title::-moz-placeholder, .modal-form .textbox-category::-moz-placeholder, .modal-form .form-input::-moz-placeholder, .modal-form .form-textarea::-moz-placeholder, .modal-form .form-select::-moz-placeholder, .modal-form input[type=text]::-moz-placeholder, .modal-form textarea::-moz-placeholder, .modal-form select::-moz-placeholder, .form-select::-moz-placeholder, .form-textarea::-moz-placeholder, .form-input::-moz-placeholder {
   color: #9e9e9e;
 }
-.form-select::placeholder, .form-textarea::placeholder, .form-input::placeholder {
+.modal-form .edit-task-category::placeholder, .modal-form .add-task-content::placeholder,
+.modal-form .edit-task-content::placeholder, .modal-form .add-task-title::placeholder,
+.modal-form .edit-task-title::placeholder,
+.modal-form .textbox-category::placeholder, .modal-form .form-input::placeholder,
+.modal-form .form-textarea::placeholder,
+.modal-form .form-select::placeholder,
+.modal-form input[type=text]::placeholder,
+.modal-form textarea::placeholder,
+.modal-form select::placeholder, .form-select::placeholder, .form-textarea::placeholder, .form-input::placeholder {
   color: #9e9e9e;
 }
 
@@ -404,46 +426,280 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 28rem;
-  max-width: calc(100vw - 2rem);
+  width: 90%;
+  max-width: 420px;
   transform: translate(-50%, -50%);
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
 }
 .modal.hidden {
   display: none;
 }
 
 .modal-form {
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.875rem;
 }
 
 .modal-title {
-  font-size: 1.75rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #212121;
+  text-align: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eeeeee;
+  letter-spacing: -0.025em;
+}
+
+.modal-form .form-input,
+.modal-form .form-textarea,
+.modal-form .form-select,
+.modal-form input[type=text],
+.modal-form textarea,
+.modal-form select {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #eeeeee;
+  transition: all 0.2s ease;
+}
+.modal-form .form-input:focus,
+.modal-form .form-textarea:focus,
+.modal-form .form-select:focus,
+.modal-form input[type=text]:focus,
+.modal-form textarea:focus,
+.modal-form select:focus {
+  border-color: #757575;
+  box-shadow: 0 0 0 3px rgba(66, 66, 66, 0.1);
+}
+.modal-form .form-input:last-of-type,
+.modal-form .form-textarea:last-of-type,
+.modal-form .form-select:last-of-type,
+.modal-form input[type=text]:last-of-type,
+.modal-form textarea:last-of-type,
+.modal-form select:last-of-type {
+  margin-bottom: 1rem;
+}
+.modal-form .add-task-title,
+.modal-form .edit-task-title,
+.modal-form .textbox-category {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #eeeeee;
+  transition: all 0.2s ease;
+}
+.modal-form .add-task-title:focus,
+.modal-form .edit-task-title:focus,
+.modal-form .textbox-category:focus {
+  border-color: #757575;
+  box-shadow: 0 0 0 3px rgba(66, 66, 66, 0.1);
+}
+.modal-form .add-task-content,
+.modal-form .edit-task-content {
+  min-height: 80px;
+  max-height: 120px;
+  resize: vertical;
   margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #eeeeee;
+  transition: all 0.2s ease;
+}
+.modal-form .add-task-content:focus,
+.modal-form .edit-task-content:focus {
+  border-color: #757575;
+  box-shadow: 0 0 0 3px rgba(66, 66, 66, 0.1);
+}
+.modal-form .edit-task-category {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #eeeeee;
+  transition: all 0.2s ease;
+}
+.modal-form .edit-task-category:focus {
+  border-color: #757575;
+  box-shadow: 0 0 0 3px rgba(66, 66, 66, 0.1);
+}
+.modal-form input[type=hidden] {
+  display: none;
+  margin: 0;
+}
+
+.char-count {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 0 1rem 0;
+}
+.char-count #char-count {
+  font-size: 0.75rem;
+  color: #9e9e9e;
+  padding: 0.375rem 0.75rem;
+  background: #fafafa;
+  border-radius: 16px;
+  border: 1px solid #eeeeee;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+.task-modal-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+.task-modal-bottom #char-count {
+  font-size: 0.75rem;
+  color: #9e9e9e;
+  padding: 0.375rem 0.75rem;
+  background: #fafafa;
+  border-radius: 16px;
+  border: 1px solid #eeeeee;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+.task-modal-bottom-sub {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
 }
 
 .modal-btns {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eeeeee;
 }
 
-.modal-btn.primary {
+.modal-btn {
+  min-width: 100px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1.5px solid transparent;
+  letter-spacing: -0.025em;
+}
+.modal-btn[type=submit] {
   background: #424242;
   color: #ffffff;
   border-color: #424242;
 }
-.modal-btn.primary:hover {
+.modal-btn[type=submit]:hover {
   background: #212121;
   border-color: #212121;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 66, 66, 0.3);
+}
+.modal-btn[type=submit]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(66, 66, 66, 0.2);
+}
+.modal-btn[type=button] {
+  background: #ffffff;
+  color: #616161;
+  border-color: #e0e0e0;
+}
+.modal-btn[type=button]:hover {
+  background: #fafafa;
+  border-color: #bdbdbd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.modal-btn[type=button]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 640px) {
+  .modal {
+    width: 95%;
+    max-width: none;
+    margin: 1rem;
+    border-radius: 16px;
+  }
+  .modal-form {
+    padding: 1.25rem;
+    gap: 0.75rem;
+  }
+  .modal-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.875rem;
+    padding-bottom: 0.625rem;
+  }
+  .modal-form .add-task-content,
+  .modal-form .edit-task-content {
+    min-height: 70px;
+    max-height: 100px;
+  }
+  .modal-form .form-input,
+  .modal-form .form-textarea,
+  .modal-form .form-select,
+  .modal-form input[type=text],
+  .modal-form textarea,
+  .modal-form select,
+  .modal-form .add-task-title,
+  .modal-form .edit-task-title,
+  .modal-form .textbox-category,
+  .modal-form .edit-task-category {
+    margin-bottom: 0.625rem;
+    padding: 0.625rem 0.875rem;
+  }
+  .modal-btns {
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-top: 1rem;
+    padding-top: 0.875rem;
+  }
+  .modal-btns .modal-btn {
+    width: 100%;
+    min-width: auto;
+    padding: 0.625rem 1rem;
+  }
+  .char-count,
+  .task-modal-bottom {
+    margin-bottom: 0.75rem;
+  }
+  .char-count #char-count,
+  .task-modal-bottom #char-count {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.6875rem;
+  }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  z-index: 999;
+}
+.modal-overlay.hidden {
+  display: none;
 }
 
 .delete-category-btn,
