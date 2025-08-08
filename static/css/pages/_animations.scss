@@ -12,7 +12,7 @@
 }
 
 #main-title {
-    opacity: 0; // 初期は透明
+    opacity: 0;
     animation: fadeSlideIn 0.8s ease-out forwards;
 }
 
@@ -32,7 +32,6 @@
 .card {
     opacity: 0;
     animation: slideIn 0.5s ease-out forwards;
-    // 遅延は nth-child で
     @for $i from 1 through 10 {
         &:nth-child(#{$i}) {
             animation-delay: #{0.1 * $i}s;  
@@ -56,7 +55,7 @@
     animation-duration: 1.2s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-out;
-    opacity: 0; // 初期は透明
+    opacity: 0;
 }
 
 /* タスクアイテムのアニメーション
@@ -77,5 +76,114 @@
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-out;
-    opacity: 0; // 初期は透明
+    opacity: 0;
+}
+
+/* テキスト選択無効化（ドラッグ機能は残す）
+=================================================== */
+.category-item,
+.category-button,
+.task-item,
+.task-title,
+.delete-task-btn,
+.delete-category-btn {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* カテゴリーボタンの基本スタイル */
+.category-button {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* タスクアイテムの基本スタイル */
+.task-item {
+    cursor: grab;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+/* Sortable.js専用スタイル（重要：ドラッグ機能用）*/
+.sortable-ghost {
+    opacity: 0.4;
+    background-color: #f0f0f0;
+}
+
+.sortable-chosen {
+    background-color: #e3f2fd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.sortable-drag {
+    opacity: 0.8;
+    transform: rotate(3deg);
+    z-index: 1000;
+}
+
+/* タスク移動時のアニメーション */
+.task-moved {
+    animation: taskMoved 0.8s ease-out;
+}
+
+@keyframes taskMoved {
+    0% { 
+        background-color: #4CAF50;
+        transform: scale(1.1);
+    }
+    50% { 
+        background-color: #2196F3;
+        color: white;
+    }
+    100% { 
+        background-color: transparent;
+        color: inherit;
+        transform: scale(1);
+    }
+}
+
+/* ドラッグ中のコンテナ */
+.task-dragging {
+    .task-list {
+        background-color: rgba(33, 150, 243, 0.05);
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+    }
+}
+
+/* リストの基本スタイル */
+.task-list {
+    min-height: 60px;
+    transition: background-color 0.2s ease;
+}
+
+/* 削除ボタンのスタイル */
+.delete-task-btn,
+.delete-category-btn {
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    
+    &:hover {
+        background-color: rgba(244, 67, 54, 0.1);
+        opacity: 1;
+    }
 }

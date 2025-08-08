@@ -9,11 +9,9 @@
 </div>
 <!-- タスク追加フォームを読み込み -->
 {% include "add_task.html" %}
-<!-- タスク一覧 -->
+<!-- タスク一覧（初期は空、JavaScriptでカテゴリー別に表示） -->
 <ul id="todo-tasks" class="task-list" data-status="todo">
-    {% for post in posts if post.status == 'todo' -%}
-    <li class="task-item" data-id="{{ post.id }}" data-title="{{ post.title }}" data-content="{{ post.content }}" data-category="{{ post.category_id }}" data-status="{{ post.status }}"><button class="delete-task-btn material-symbols-outlined hidden" data-task-id="{{ post.id }}">delete</button><span class="task-title">{{ post.title }}</span></li>
-    {%- endfor %}
+    <li class="no-tasks">カテゴリーを選択してください</li>
 </ul>
 <!-- 編集フォームを追加読み込み -->
 {% include "edit_task.html" %}
