@@ -9,17 +9,7 @@
 @use 'base/layout';
 
 // コンポーネント
-@use 'components/buttons';
-@use 'components/lists';
-@use 'components/forms';
-
-// エフェクト
-@use 'effects/animations';
+@use 'components/components';
 
 // ユーティリティ（必要に応じて）
 // @use 'utilities/helpers';
-
-// ページ別スタイル
-@use 'pages/animations';
-@use 'pages/body';
-@use 'pages/add-edit';

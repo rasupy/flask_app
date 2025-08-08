@@ -15,19 +15,16 @@
 
 html {
     font-size: 16px;
-    scroll-behavior: smooth;
 }
 
 body {
-    font-family: var.$font-family-primary;
+    font-family: var.$font-family;
     font-size: var.$font-size-base;
     font-weight: var.$font-weight-normal;
-    line-height: var.$line-height-base;
-    color: var.$color-text-primary;
-    background-color: var.$color-background;
+    line-height: var.$line-height;
+    color: var.$color-text;
+    background: var.$color-bg;
     overflow-y: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 // フォーカス管理
@@ -40,13 +37,11 @@ body {
 // テキスト選択
 // ----------------------------------------
 ::selection {
-    background-color: var.$color-gray-200;
-    color: var.$color-text-primary;
+    background: var.$gray-200;
 }
 
 ::-moz-selection {
-    background-color: var.$color-gray-200;
-    color: var.$color-text-primary;
+    background: var.$gray-200;
 }
 
 // メインレイアウト
@@ -54,15 +49,14 @@ body {
 #main-title {
     font-size: var.$font-size-xl;
     font-weight: var.$font-weight-medium;
-    color: var.$color-text-primary;
     margin: var.$spacing-base;
-    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
 }
 
 #contents {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
     padding: var.$spacing-base;
     height: calc(100vh - 4rem);
     gap: var.$spacing-sm;
@@ -81,14 +75,22 @@ body {
     flex: 1 1 calc(25% - var.$spacing-sm);
     min-width: 280px;
     background: var.$color-surface;
-    border: var.$border-width-thin var.$border-style var.$color-border-light;
-    border-radius: var.$border-radius-md;
+    border: var.$border;
+    border-radius: var.$border-radius;
     padding: var.$card-padding;
-    box-shadow: var.$shadow-base;
-    transition: box-shadow var.$transition-base;
+    box-shadow: var.$shadow;
+    transition: box-shadow var.$transition;
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
 
     &:hover {
         box-shadow: var.$shadow-hover;
+    }
+
+    @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{0.1 * $i}s;
+        }
     }
 }
 
@@ -99,15 +101,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: var.$spacing-sm;
-    border-bottom: var.$border-width-thin var.$border-style var.$color-border-light;
+    border-bottom: var.$border;
     margin-bottom: var.$spacing-base;
 }
 
 .title {
     font-size: var.$font-size-lg;
     font-weight: var.$font-weight-medium;
-    color: var.$color-text-primary;
-    letter-spacing: 0.01em;
 }
 
 // ボタングループ
